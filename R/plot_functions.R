@@ -1,46 +1,52 @@
 #' Read in week-ahead forecasts from a file
-read_week_ahead <- function(file){
+read_week_ahead <- function(file) {
   dat <- read.csv(file, colClasses = c(location = "character", forecast_date = "Date", target_end_date = "Date"), stringsAsFactors = FALSE)
-  return(subset(dat, target %in% c(paste(1:4, "wk ahead inc death"), paste(1:4, "wk ahead cum death"),
-                                   paste(1:4, "wk ahead inc case"), paste(1:4, "wk ahead cum case"))))
+  return(subset(dat, target %in% c(
+    paste(1:4, "wk ahead inc death"), paste(1:4, "wk ahead cum death"),
+    paste(1:4, "wk ahead inc case"), paste(1:4, "wk ahead cum case")
+  )))
 }
 
 #' Get the subset of a forecast file needed for plotting
-subset_forecasts_for_plot <- function(forecasts, forecast_date = NULL, target_type, horizon, location, type = NULL){
-  check_target <- if(is.null(horizon)){
+subset_forecasts_for_plot <- function(forecasts, forecast_date = NULL, target_type, horizon, location, type = NULL) {
+  check_target <- if (is.null(horizon)) {
     grepl(target_type, forecasts$target)
-  } else{
+  } else {
     grepl(horizon, forecasts$target) & grepl(target_type, forecasts$target)
   }
-  check_forecast_date <- if(is.null(forecast_date)) TRUE else forecasts$forecast_date == forecast_date
+  check_forecast_date <- if (is.null(forecast_date)) TRUE else forecasts$forecast_date == forecast_date
 
   forecasts <- forecasts[check_target &
-                           check_forecast_date &
-                           forecasts$location == location, ]
-  if(!is.null(type)) forecasts <- forecasts[forecasts$type == type, ]
+    check_forecast_date &
+    forecasts$location == location, ]
+  if (!is.null(type)) forecasts <- forecasts[forecasts$type == type, ]
   return(forecasts)
 }
 
 #' Helper function to determine y-limit
-determine_ylim <- function(forecasts, forecast_date = NULL, target_type, horizon, location, truth, start_at_zero = TRUE){
-  forecasts <- subset_forecasts_for_plot(forecasts = forecasts, forecast_date = forecast_date,
-                            target_type = target_type, horizon = horizon, location = location)
-  lower <- if(start_at_zero){
+determine_ylim <- function(forecasts, forecast_date = NULL, target_type, horizon, location, truth, start_at_zero = TRUE) {
+  forecasts <- subset_forecasts_for_plot(
+    forecasts = forecasts, forecast_date = forecast_date,
+    target_type = target_type, horizon = horizon, location = location
+  )
+  lower <- if (start_at_zero) {
     0
-  }else{
-    0.95*min(c(forecasts$value, truth[, target_type]))
+  } else {
+    0.95 * min(c(forecasts$value, truth[, target_type]))
   }
   truth <- truth[truth$location == location, ]
-  ylim <- c(lower, 1.05* max(c(forecasts$value, truth[, target_type])))
+  ylim <- c(lower, 1.05 * max(c(forecasts$value, truth[, target_type])))
 }
 
 #' Create an empty plot to which forecasts can be added
-empty_plot <- function(xlim, ylim, xlab, ylab){
-  plot(NULL, xlim = xlim, ylim = ylim,
-       xlab = xlab, ylab = "", axes = FALSE)
+empty_plot <- function(xlim, ylim, xlab, ylab) {
+  plot(NULL,
+    xlim = xlim, ylim = ylim,
+    xlab = xlab, ylab = "", axes = FALSE
+  )
   axis(2, las = 1)
   title(ylab = ylab, line = 4)
-  all_dates <- seq(from = as.Date("2020-02-01"), to = Sys.Date() + 28, by  =1)
+  all_dates <- seq(from = as.Date("2020-02-01"), to = Sys.Date() + 28, by = 1)
   saturdays <- all_dates[weekdays(all_dates) == "Saturday"]
   axis(1, at = saturdays, labels = as.Date(saturdays, origin = "1970-01-01"))
   box()
@@ -48,50 +54,58 @@ empty_plot <- function(xlim, ylim, xlab, ylab){
 
 #' Add a single prediction interval
 draw_prediction_band <- function(forecasts, forecast_date = NULL, target_type, horizon,
-                                 location, coverage, col = "lightgrey"){
-  if(!coverage %in% c(1:9/10, 0.95, 0.98)) stop("Coverage needs to be from 0.1, 0.2, ..., 0.9, 0.95, 0.98")
+                                 location, coverage, col = "lightgrey") {
+  if (!coverage %in% c(1:9 / 10, 0.95, 0.98)) stop("Coverage needs to be from 0.1, 0.2, ..., 0.9, 0.95, 0.98")
 
-  forecasts <- subset_forecasts_for_plot(forecasts  =forecasts, forecast_date = forecast_date,
-                            target_type = target_type, horizon = horizon, location = location,
-                            type = "quantile")
+  forecasts <- subset_forecasts_for_plot(
+    forecasts = forecasts, forecast_date = forecast_date,
+    target_type = target_type, horizon = horizon, location = location,
+    type = "quantile"
+  )
 
   # select points to draw polygon:
-  lower <- subset(forecasts, abs(quantile - (1 - coverage)/2) < 0.01)
+  lower <- subset(forecasts, abs(quantile - (1 - coverage) / 2) < 0.01)
   lower <- lower[order(lower$target_end_date), ]
-  upper <- subset(forecasts, abs(quantile - (1 - (1 - coverage)/2)) < 0.01)
+  upper <- subset(forecasts, abs(quantile - (1 - (1 - coverage) / 2)) < 0.01)
   upper <- upper[order(upper$target_end_date, decreasing = TRUE), ]
   # draw:
-  polygon(x = c(lower$target_end_date, upper$target_end_date),
-          y = c(lower$value, upper$value), col = col, border = NA)
+  polygon(
+    x = c(lower$target_end_date, upper$target_end_date),
+    y = c(lower$value, upper$value), col = col, border = NA
+  )
 }
 
 #' Draw many prediction intervals (resulting in a fanplot)
-draw_fanplot <- function(forecasts, target_type, forecast_date, horizon, location, levels_coverage = c(1:9/10, 0.95, 0.98),
-                         cols = colorRampPalette(c("deepskyblue4", "lightgrey"))(length(levels_coverage) + 1)[-1]){
-  for(i in rev(seq_along(levels_coverage))){
-    draw_prediction_band(forecasts = forecasts,
-                         target_type = target_type,
-                         horizon = horizon,
-                         forecast_date = forecast_date,
-                         location = location,
-                         coverage = levels_coverage[i],
-                         col = cols[i])
+draw_fanplot <- function(forecasts, target_type, forecast_date, horizon, location, levels_coverage = c(1:9 / 10, 0.95, 0.98),
+                         cols = colorRampPalette(c("deepskyblue4", "lightgrey"))(length(levels_coverage) + 1)[-1]) {
+  for (i in rev(seq_along(levels_coverage))) {
+    draw_prediction_band(
+      forecasts = forecasts,
+      target_type = target_type,
+      horizon = horizon,
+      forecast_date = forecast_date,
+      location = location,
+      coverage = levels_coverage[i],
+      col = cols[i]
+    )
   }
 }
 
 #' Add points for point forecasts
-draw_points <- function(forecasts, target_type, horizon, forecast_date, location, col = "deepskyblue4"){
-  forecasts <- subset_forecasts_for_plot(forecasts = forecasts, forecast_date = forecast_date,
-                                         target_type = target_type, horizon = horizon, location = location,
-                                         type = "point")
+draw_points <- function(forecasts, target_type, horizon, forecast_date, location, col = "deepskyblue4") {
+  forecasts <- subset_forecasts_for_plot(
+    forecasts = forecasts, forecast_date = forecast_date,
+    target_type = target_type, horizon = horizon, location = location,
+    type = "point"
+  )
   lines(forecasts$target_end_date, forecasts$value, col = col)
   points(forecasts$target_end_date, forecasts$value, pch = 21, col = col, bg = "white")
 }
 
 #' Add smaller points for truths
-draw_truths <- function(truth, location, target_type){
+draw_truths <- function(truth, location, target_type) {
   truth <- truth[weekdays(truth$date) == "Saturday" &
-                   truth$location == location, ]
+    truth$location == location, ]
   points(truth$date, truth[, target_type], pch = 20, type = "b")
 }
 
@@ -120,7 +134,7 @@ plot_forecast <- function(forecasts,
                           forecast_date = NULL,
                           location,
                           truth,
-                          levels_coverage = c(1:9/10, 0.95, 0.98),
+                          levels_coverage = c(1:9 / 10, 0.95, 0.98),
                           start = as.Date("2020-04-01"),
                           end = Sys.Date() + 28,
                           ylim = NULL,
@@ -128,26 +142,33 @@ plot_forecast <- function(forecasts,
                           col_point = "deepskyblue4",
                           xlab = "date",
                           ylab = target_type,
-                          start_at_zero = TRUE){
-
-  if(is.null(horizon) & is.null(forecast_date)) stop("Exactly one out of horizon and forecast_date needs to be specified")
+                          start_at_zero = TRUE) {
+  if (is.null(horizon) & is.null(forecast_date)) stop("Exactly one out of horizon and forecast_date needs to be specified")
 
   forecasts <- subset(forecasts, target_end_date >= start & target_end_date <= end)
   truth <- truth[truth$date >= start & truth$location == location, ]
   xlim <- c(start, end)
 
-  if(is.null(ylim)) ylim <- determine_ylim(forecasts = forecasts, forecast_date = forecast_date,
-                                           target_type = target_type, horizon = horizon,
-                                           location = location, truth = truth, start_at_zero = start_at_zero)
+  if (is.null(ylim)) {
+    ylim <- determine_ylim(
+      forecasts = forecasts, forecast_date = forecast_date,
+      target_type = target_type, horizon = horizon,
+      location = location, truth = truth, start_at_zero = start_at_zero
+    )
+  }
 
   empty_plot(xlim = xlim, ylim = ylim, xlab = xlab, ylab = ylab)
-  if(!is.null(forecast_date)) abline(v = forecast_date, lty = "dashed")
-  draw_fanplot(forecasts = forecasts, target_type = target_type,
-               horizon = horizon, forecast_date = forecast_date,
-               location = location, levels_coverage = levels_coverage,
-               cols = cols_intervals)
-  draw_points(forecasts = forecasts, target_type = target_type,
-              horizon = horizon, forecast_date = forecast_date,
-              location = location, col = col_point)
+  if (!is.null(forecast_date)) abline(v = forecast_date, lty = "dashed")
+  draw_fanplot(
+    forecasts = forecasts, target_type = target_type,
+    horizon = horizon, forecast_date = forecast_date,
+    location = location, levels_coverage = levels_coverage,
+    cols = cols_intervals
+  )
+  draw_points(
+    forecasts = forecasts, target_type = target_type,
+    horizon = horizon, forecast_date = forecast_date,
+    location = location, col = col_point
+  )
   draw_truths(truth = truth, location = location, target_type = target_type)
 }
