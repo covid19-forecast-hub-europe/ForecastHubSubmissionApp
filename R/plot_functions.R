@@ -1,11 +1,11 @@
-# read in week-ahead forecasts from a file
+#' Read in week-ahead forecasts from a file
 read_week_ahead <- function(file){
   dat <- read.csv(file, colClasses = c(location = "character", forecast_date = "Date", target_end_date = "Date"), stringsAsFactors = FALSE)
   return(subset(dat, target %in% c(paste(1:4, "wk ahead inc death"), paste(1:4, "wk ahead cum death"),
                                    paste(1:4, "wk ahead inc case"), paste(1:4, "wk ahead cum case"))))
 }
 
-# get the subset of a forecast file needed for plotting:
+#' Get the subset of a forecast file needed for plotting
 subset_forecasts_for_plot <- function(forecasts, forecast_date = NULL, target_type, horizon, location, type = NULL){
   check_target <- if(is.null(horizon)){
     grepl(target_type, forecasts$target)
@@ -13,7 +13,7 @@ subset_forecasts_for_plot <- function(forecasts, forecast_date = NULL, target_ty
     grepl(horizon, forecasts$target) & grepl(target_type, forecasts$target)
   }
   check_forecast_date <- if(is.null(forecast_date)) TRUE else forecasts$forecast_date == forecast_date
-  
+
   forecasts <- forecasts[check_target &
                            check_forecast_date &
                            forecasts$location == location, ]
@@ -21,7 +21,7 @@ subset_forecasts_for_plot <- function(forecasts, forecast_date = NULL, target_ty
   return(forecasts)
 }
 
-# helper function to deterine y-limit
+#' Helper function to determine y-limit
 determine_ylim <- function(forecasts, forecast_date = NULL, target_type, horizon, location, truth, start_at_zero = TRUE){
   forecasts <- subset_forecasts_for_plot(forecasts = forecasts, forecast_date = forecast_date,
                             target_type = target_type, horizon = horizon, location = location)
@@ -34,7 +34,7 @@ determine_ylim <- function(forecasts, forecast_date = NULL, target_type, horizon
   ylim <- c(lower, 1.05* max(c(forecasts$value, truth[, target_type])))
 }
 
-# create an empty plot to which forecasts can be added:
+#' Create an empty plot to which forecasts can be added
 empty_plot <- function(xlim, ylim, xlab, ylab){
   plot(NULL, xlim = xlim, ylim = ylim,
        xlab = xlab, ylab = "", axes = FALSE)
@@ -46,7 +46,7 @@ empty_plot <- function(xlim, ylim, xlab, ylab){
   box()
 }
 
-# add a single prediction interval:
+#' Add a single prediction interval
 draw_prediction_band <- function(forecasts, forecast_date = NULL, target_type, horizon,
                                  location, coverage, col = "lightgrey"){
   if(!coverage %in% c(1:9/10, 0.95, 0.98)) stop("Coverage needs to be from 0.1, 0.2, ..., 0.9, 0.95, 0.98")
@@ -65,7 +65,7 @@ draw_prediction_band <- function(forecasts, forecast_date = NULL, target_type, h
           y = c(lower$value, upper$value), col = col, border = NA)
 }
 
-# draw many prediction intervals (resulting in a fanplot)
+#' Draw many prediction intervals (resulting in a fanplot)
 draw_fanplot <- function(forecasts, target_type, forecast_date, horizon, location, levels_coverage = c(1:9/10, 0.95, 0.98),
                          cols = colorRampPalette(c("deepskyblue4", "lightgrey"))(length(levels_coverage) + 1)[-1]){
   for(i in rev(seq_along(levels_coverage))){
@@ -79,7 +79,7 @@ draw_fanplot <- function(forecasts, target_type, forecast_date, horizon, locatio
   }
 }
 
-# add points for point forecasts:
+#' Add points for point forecasts
 draw_points <- function(forecasts, target_type, horizon, forecast_date, location, col = "deepskyblue4"){
   forecasts <- subset_forecasts_for_plot(forecasts = forecasts, forecast_date = forecast_date,
                                          target_type = target_type, horizon = horizon, location = location,
@@ -88,29 +88,32 @@ draw_points <- function(forecasts, target_type, horizon, forecast_date, location
   points(forecasts$target_end_date, forecasts$value, pch = 21, col = col, bg = "white")
 }
 
-# add smaller points for truths:
+#' Add smaller points for truths
 draw_truths <- function(truth, location, target_type){
   truth <- truth[weekdays(truth$date) == "Saturday" &
                    truth$location == location, ]
   points(truth$date, truth[, target_type], pch = 20, type = "b")
 }
 
-# wrap it all up into one plotting function:
-# Arguments:
-# forecasts a data.frame containing forecasts from one model in he standard long format
-# needs to contain forecasts from different forecast_dates to plot forecats by "horizon"
-# target_type: "inc death" or "cum death"
-# horizon: "1 wk ahead", "2 wk ahead", "3 wk ahead" or "4 wk ahead"; if specified forecasts at this horizon
-# are plotted for different forecast dates. Has to be NULL if forecast_date is specified
-# forecast_date: the date at which forecasts were issued; if specified, 1 though 4 wk ahead forecasts are shown
-# Has to be NULL if horizon is specified
-# location: the location for which to plot forecasts
-# truth: the truth data set
-# levels_coverage: which intervals are to be shown? Defaults to all, c(0.5, 0.95) is a reasonable
-# parsimonious choice.
-# start, end: beginning and end of the time period to plot
-# ylim: the y limits of the plot. If NULL chosen automatically.
-# cols: a vector of colors of the same length as levels_coverage
+#' Wrap it all up into one plotting function:
+
+#' @param forecasts a data.frame containing forecasts from one model in the
+#' standard long format needs to contain forecasts from different
+#' `forecast_dates` to plot forecats by "horizon"
+#' @param target_type `"inc death"` or `"cum death"`
+#' @param horizon `"1 wk ahead"`, `"2 wk ahead"`, `"3 wk ahead"` or
+#' `"4 wk ahead"`; if specified forecasts at this horizon are plotted for
+#' different forecast dates. Has to be NULL if forecast_date is specified
+#' @param forecast_date the date at which forecasts were issued; if specified,
+#' 1 though 4 wk ahead forecasts are shown. Has to be NULL if horizon is
+#' specified
+#' @param location the location for which to plot forecasts
+#' @param truth the truth data set
+#' @param levels_coverage which intervals are to be shown? Defaults to all.
+#' `c(0.5, 0.95)` is a reasonable parsimonious choice.
+#' @param start,end beginning and end of the time period to plot
+#' @param ylim: the y limits of the plot. If NULL chosen automatically.
+#' @param cols a vector of colors of the same length as levels_coverage
 plot_forecast <- function(forecasts,
                           target_type = "cum death",
                           horizon = NULL,
