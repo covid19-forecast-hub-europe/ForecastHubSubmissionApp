@@ -1,4 +1,6 @@
 #' Read in week-ahead forecasts from a file
+#'
+#' @importFrom utils read.csv
 read_week_ahead <- function(file) {
   dat <- read.csv(file, colClasses = c(location = "character", forecast_date = "Date", target_end_date = "Date"), stringsAsFactors = FALSE)
   return(subset(dat, target %in% c(
@@ -42,6 +44,8 @@ determine_ylim <- function(forecasts, forecast_date = NULL, target_type, horizon
 }
 
 #' Create an empty plot to which forecasts can be added
+#'
+#' @importFrom graphics plot axis title box
 empty_plot <- function(xlim, ylim, xlab, ylab) {
   plot(NULL,
     xlim = xlim, ylim = ylim,
@@ -56,6 +60,8 @@ empty_plot <- function(xlim, ylim, xlab, ylab) {
 }
 
 #' Add a single prediction interval
+#'
+#' @importFrom graphics polygon
 draw_prediction_band <- function(forecasts, forecast_date = NULL, target_type, horizon,
                                  location, coverage, col = "lightgrey") {
   if (!coverage %in% c(1:9 / 10, 0.95, 0.98)) stop("Coverage needs to be from 0.1, 0.2, ..., 0.9, 0.95, 0.98")
@@ -95,6 +101,8 @@ draw_fanplot <- function(forecasts, target_type, forecast_date, horizon, locatio
 }
 
 #' Add points for point forecasts
+#'
+#' @importFrom graphics lines points
 draw_points <- function(forecasts, target_type, horizon, forecast_date, location, col = "deepskyblue4") {
   forecasts <- subset_forecasts_for_plot(
     forecasts = forecasts, forecast_date = forecast_date,
@@ -131,6 +139,9 @@ draw_truths <- function(truth, location, target_type) {
 #' @param start,end beginning and end of the time period to plot
 #' @param ylim: the y limits of the plot. If NULL chosen automatically.
 #' @param cols a vector of colors of the same length as levels_coverage
+#'
+#' @importFrom grDevices colorRampPalette
+#' @importFrom graphics abline
 plot_forecast <- function(forecasts,
                           target_type = "cum death",
                           horizon = NULL,
