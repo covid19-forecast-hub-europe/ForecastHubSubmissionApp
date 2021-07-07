@@ -3,10 +3,12 @@
 #' @importFrom utils read.csv
 read_week_ahead <- function(file) {
   dat <- read.csv(file, colClasses = c(location = "character", forecast_date = "Date", target_end_date = "Date"), stringsAsFactors = FALSE)
-  return(subset(dat, target %in% c(
-    paste(1:4, "wk ahead inc death"), paste(1:4, "wk ahead cum death"),
-    paste(1:4, "wk ahead inc case"), paste(1:4, "wk ahead cum case")
-  )))
+  return(
+    dat[dat$target %in% c(
+      paste(1:4, "wk ahead inc death"), paste(1:4, "wk ahead cum death"),
+      paste(1:4, "wk ahead inc case"), paste(1:4, "wk ahead cum case")
+    ),]
+  )
 }
 
 #' Get the subset of a forecast file needed for plotting
@@ -73,9 +75,9 @@ draw_prediction_band <- function(forecasts, forecast_date = NULL, target_type, h
   )
 
   # select points to draw polygon:
-  lower <- subset(forecasts, abs(quantile - (1 - coverage) / 2) < 0.01)
+  lower <- forecasts[abs(forecasts$quantile - (1 - forecasts$coverage) / 2) < 0.01, ]
   lower <- lower[order(lower$target_end_date), ]
-  upper <- subset(forecasts, abs(quantile - (1 - (1 - coverage) / 2)) < 0.01)
+  upper <- forecasts[abs(forecasts$quantile - (1 - (1 - forecasts$coverage) / 2)) < 0.01, ]
   upper <- upper[order(upper$target_end_date, decreasing = TRUE), ]
   # draw:
   polygon(
@@ -159,7 +161,7 @@ plot_forecast <- function(forecasts,
                           start_at_zero = TRUE) {
   if (is.null(horizon) & is.null(forecast_date)) stop("Exactly one out of horizon and forecast_date needs to be specified")
 
-  forecasts <- subset(forecasts, target_end_date >= start & target_end_date <= end)
+  forecasts <- forecasts[forecasts$target_end_date >= start & forecasts$target_end_date <= end, ]
   truth <- truth[truth$date >= start & truth$location == location, ]
   xlim <- c(start, end)
 
