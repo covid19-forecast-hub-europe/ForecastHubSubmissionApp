@@ -47,9 +47,18 @@ specified}
 
 \item{start, end}{beginning and end of the time period to plot}
 
-\item{ylim:}{the y limits of the plot. If NULL chosen automatically.}
+\item{ylim}{the y limits of the plot.}
 
-\item{cols}{a vector of colors of the same length as levels_coverage}
+\item{cols_intervals}{a vector of colors of the same length as levels_coverage}
+
+\item{col_point}{color of the point forecasts}
+
+\item{xlab}{a label for the x axis, defaults to a description of \code{x}.}
+
+\item{ylab}{a label for the y axis, defaults to a description of \code{y}.}
+
+\item{start_at_zero}{logical (defaults to \code{TRUE}): should the y-axis include
+0.}
 }
 \description{
 Wrap it all up into one plotting function:

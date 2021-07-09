@@ -6,6 +6,19 @@
 \usage{
 empty_plot(xlim, ylim, xlab, ylab)
 }
+\arguments{
+\item{xlim}{the x limits (x1, x2) of the plot.  Note that \code{x1 > x2}
+    is allowed and leads to a \sQuote{reversed axis}.
+
+    The default value, \code{NULL}, indicates that the range of the
+    \link{finite} values to be plotted should be used.}
+
+\item{ylim}{the y limits of the plot.}
+
+\item{xlab}{a label for the x axis, defaults to a description of \code{x}.}
+
+\item{ylab}{a label for the y axis, defaults to a description of \code{y}.}
+}
 \description{
 Create an empty plot to which forecasts can be added
 }

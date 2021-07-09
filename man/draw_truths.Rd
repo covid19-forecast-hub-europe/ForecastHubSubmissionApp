@@ -6,6 +6,13 @@
 \usage{
 draw_truths(truth, location, target_type)
 }
+\arguments{
+\item{truth}{the truth data set}
+
+\item{location}{the location for which to plot forecasts}
+
+\item{target_type}{\code{"inc death"} or \code{"cum death"}}
+}
 \description{
 Add smaller points for truths
 }

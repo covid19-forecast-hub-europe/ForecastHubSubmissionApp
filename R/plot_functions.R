@@ -1,5 +1,7 @@
 #' Read in week-ahead forecasts from a file
 #'
+#' @inheritParams utils::read.csv
+#'
 #' @importFrom utils read.csv
 read_week_ahead <- function(file) {
   dat <- read.csv(file, colClasses = c(location = "character", forecast_date = "Date", target_end_date = "Date"), stringsAsFactors = FALSE)
@@ -12,6 +14,10 @@ read_week_ahead <- function(file) {
 }
 
 #' Get the subset of a forecast file needed for plotting
+#'
+#' @inheritParams plot_forecast
+#' @param type type of forecast. Either `quantile` or `point`.
+#'
 subset_forecasts_for_plot <- function(forecasts, forecast_date = NULL, target_type, horizon, location, type = NULL) {
   check_target <- if (is.null(horizon)) {
     grepl(target_type, forecasts$target)
@@ -30,6 +36,9 @@ subset_forecasts_for_plot <- function(forecasts, forecast_date = NULL, target_ty
 }
 
 #' Helper function to determine y-limit
+#'
+#' @inheritParams plot_forecast
+#'
 determine_ylim <- function(forecasts, forecast_date = NULL, target_type, horizon, location, truth, start_at_zero = TRUE) {
   truth <- subset(truth, date >= forecast_date - 28)
   forecasts <- subset_forecasts_for_plot(
@@ -47,6 +56,8 @@ determine_ylim <- function(forecasts, forecast_date = NULL, target_type, horizon
 
 #' Create an empty plot to which forecasts can be added
 #'
+#' @inheritParams graphics::plot
+#'
 #' @importFrom graphics plot axis title box
 empty_plot <- function(xlim, ylim, xlab, ylab) {
   plot(NULL,
@@ -62,6 +73,10 @@ empty_plot <- function(xlim, ylim, xlab, ylab) {
 }
 
 #' Add a single prediction interval
+#'
+#' @inheritParams plot_forecast
+#' @param col color of the current band
+#' @param coverage CI of the current band
 #'
 #' @importFrom graphics polygon
 draw_prediction_band <- function(forecasts, forecast_date = NULL, target_type, horizon,
@@ -87,6 +102,10 @@ draw_prediction_band <- function(forecasts, forecast_date = NULL, target_type, h
 }
 
 #' Draw many prediction intervals (resulting in a fanplot)
+#'
+#' @inheritParams plot_forecast
+#' @param cols a vector of colors of the same length as levels_coverage
+#'
 draw_fanplot <- function(forecasts, target_type, forecast_date, horizon, location, levels_coverage = c(1:9 / 10, 0.95, 0.98),
                          cols = colorRampPalette(c("deepskyblue4", "lightgrey"))(length(levels_coverage) + 1)[-1]) {
   for (i in rev(seq_along(levels_coverage))) {
@@ -104,6 +123,9 @@ draw_fanplot <- function(forecasts, target_type, forecast_date, horizon, locatio
 
 #' Add points for point forecasts
 #'
+#' @inheritParams plot_forecast
+#' @param col color of the point forecasts
+#'
 #' @importFrom graphics lines points
 draw_points <- function(forecasts, target_type, horizon, forecast_date, location, col = "deepskyblue4") {
   forecasts <- subset_forecasts_for_plot(
@@ -116,6 +138,9 @@ draw_points <- function(forecasts, target_type, horizon, forecast_date, location
 }
 
 #' Add smaller points for truths
+#'
+#' @inheritParams plot_forecast
+#'
 draw_truths <- function(truth, location, target_type) {
   truth <- truth[weekdays(truth$date) == "Saturday" &
     truth$location == location, ]
@@ -139,8 +164,12 @@ draw_truths <- function(truth, location, target_type) {
 #' @param levels_coverage which intervals are to be shown? Defaults to all.
 #' `c(0.5, 0.95)` is a reasonable parsimonious choice.
 #' @param start,end beginning and end of the time period to plot
-#' @param ylim: the y limits of the plot. If NULL chosen automatically.
-#' @param cols a vector of colors of the same length as levels_coverage
+#' @param cols_intervals a vector of colors of the same length as levels_coverage
+#' @param col_point color of the point forecasts
+#' @param start_at_zero logical (defaults to `TRUE`): should the y-axis include
+#' 0.
+#'
+#' @inheritParams graphics::plot
 #'
 #' @importFrom grDevices colorRampPalette
 #' @importFrom graphics abline

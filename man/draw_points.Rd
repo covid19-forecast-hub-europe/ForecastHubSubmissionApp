@@ -13,6 +13,25 @@ draw_points(
   col = "deepskyblue4"
 )
 }
+\arguments{
+\item{forecasts}{a data.frame containing forecasts from one model in the
+standard long format needs to contain forecasts from different
+\code{forecast_dates} to plot forecats by "horizon"}
+
+\item{target_type}{\code{"inc death"} or \code{"cum death"}}
+
+\item{horizon}{\code{"1 wk ahead"}, \code{"2 wk ahead"}, \code{"3 wk ahead"} or
+\code{"4 wk ahead"}; if specified forecasts at this horizon are plotted for
+different forecast dates. Has to be NULL if forecast_date is specified}
+
+\item{forecast_date}{the date at which forecasts were issued; if specified,
+1 though 4 wk ahead forecasts are shown. Has to be NULL if horizon is
+specified}
+
+\item{location}{the location for which to plot forecasts}
+
+\item{col}{color of the point forecasts}
+}
 \description{
 Add points for point forecasts
 }
