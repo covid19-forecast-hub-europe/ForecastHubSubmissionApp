@@ -1,5 +1,6 @@
 #' @author Written by Johannes Bracher, johannes.bacher@@kit.edu
 #' @import shiny
+#' @importFrom graphics legend par text
 
 # unix command to change language (for local testing)
 Sys.setlocale(category = "LC_TIME", locale = "en_US.UTF8")
