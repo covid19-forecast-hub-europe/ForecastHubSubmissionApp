@@ -10,6 +10,8 @@ run_app(...)
 Run shiny app
 }
 \examples{
-run_app()
+if (interactive()) {
+  run_app()
+}
 
 }
