@@ -6,6 +6,9 @@
 \usage{
 run_app(...)
 }
+\arguments{
+\item{...}{only for future-proofing, ignored for now.}
+}
 \description{
 Run shiny app
 }
