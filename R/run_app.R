@@ -1,3 +1,8 @@
+#' Run shiny app
+#'
+#' @examples
+#' run_app()
+#'
 #' @export
 run_app <- function(...) {
   shinyApp(
