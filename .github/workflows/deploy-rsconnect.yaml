@@ -1,0 +1,22 @@
+on:
+  push:
+    branches:
+      - main
+
+name: deploy-rsconnect
+
+jobs:
+  deploy-shiny:
+    runs-on: macOS-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: r-lib/actions/setup-r@master
+      - name: Install shiny
+        run: |
+          install.packages(c("shiny", "rsconnect"), type = "binary")
+        shell: Rscript {0}
+      - name: Push to shinyapps.io
+        run: |
+          rsconnect::setAccountInfo(name='hgruson', token=${{secrets.SHINYAPPS_TOKEN}}, secret=${{secrets.SHINYAPPS_SECRET}})
+          rsconnect::deployApp()
+        shell: Rscript {0}
