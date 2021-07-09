@@ -1,4 +1,4 @@
-#' @author Written by Johannes Bracher, johannes.bacher@kit.edu
+#' @author Written by Johannes Bracher, johannes.bacher@@kit.edu
 #' @import shiny
 
 # unix command to change language (for local testing)
@@ -25,8 +25,7 @@ colnames(dat_truth) <- gsub("inc_", "inc ", colnames(dat_truth))
 # define colors
 cols_legend <- c("#699DAF", "#D3D3D3")
 
-# Define server logic
-shinyServer(function(input, output, session) {
+app_server <- function(input, output, session) {
   dat <- reactiveValues()
 
   # Handle reading in of files:
@@ -136,4 +135,5 @@ shinyServer(function(input, output, session) {
   output$plot_ui <- renderUI({
     plotOutput("plot", height = ifelse(is.null(dat$locations), 500, length(dat$locations) * 250))
   })
-})
+
+}
