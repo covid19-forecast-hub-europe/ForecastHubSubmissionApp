@@ -90,9 +90,9 @@ draw_prediction_band <- function(forecasts, forecast_date = NULL, target_type, h
   )
 
   # select points to draw polygon:
-  lower <- forecasts[abs(forecasts$quantile - (1 - forecasts$coverage) / 2) < 0.01, ]
+  lower <- forecasts[abs(forecasts$quantile - (1 - coverage) / 2) < 0.01, ]
   lower <- lower[order(lower$target_end_date), ]
-  upper <- forecasts[abs(forecasts$quantile - (1 - (1 - forecasts$coverage) / 2)) < 0.01, ]
+  upper <- forecasts[abs(forecasts$quantile - (1 - (1 - coverage) / 2)) < 0.01, ]
   upper <- upper[order(upper$target_end_date, decreasing = TRUE), ]
   # draw:
   polygon(
