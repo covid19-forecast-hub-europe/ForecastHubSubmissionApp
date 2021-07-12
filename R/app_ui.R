@@ -31,8 +31,8 @@ app_ui <- function(request) {
         tags$div(
           tags$span(style = "color:white", ".")
         ),
-        h6(" Even if your files are displayed correctly here it is possible that they fail the format checks on the GitHub platform. The formal evaluation checks are not run on this site, it serves solely for visualization. Information on how to run
-           validation checks locally can be found in the Wiki of our GitHub repository."),
+        h6(HTML("Even if your files are displayed correctly here it is possible that they fail the format checks on the GitHub platform. The formal evaluation checks are not run on this site, it serves solely for visualization. Information on how to run
+           validation checks locally can be found in the <a href='https://github.com/epiforecasts/covid19-forecast-hub-europe/wiki'>Wiki of our GitHub repository</a>.")),
         h4("A few things worth checking:"),
         h6(
           "The following are no requirements for submission and will not be checked after your pull request.",
