@@ -9,7 +9,7 @@ read_week_ahead <- function(file) {
     dat[dat$target %in% c(
       paste(1:4, "wk ahead inc death"), paste(1:4, "wk ahead cum death"),
       paste(1:4, "wk ahead inc case"), paste(1:4, "wk ahead cum case")
-    ),]
+    ), ]
   )
 }
 
@@ -30,7 +30,7 @@ subset_forecasts_for_plot <- function(forecasts, forecast_date = NULL, target_ty
     check_forecast_date &
     forecasts$location == location &
     (forecasts$quantile %in% c(0.025, 0.25, 0.5, 0.75, 0.975) |
-       forecasts$type == "point"), ]
+      forecasts$type == "point"), ]
   if (!is.null(type)) forecasts <- forecasts[forecasts$type == type, ]
   return(forecasts)
 }

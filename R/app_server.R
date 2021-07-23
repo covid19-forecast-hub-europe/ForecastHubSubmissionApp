@@ -62,10 +62,12 @@ app_server <- function(input, output, session) {
       try(dat$forecasts <- read_week_ahead(dat$path)) # wrapped in try() to avoid crash if no valid csv
     }
 
-    # extact locations:
+    # extract locations:
     if (!is.null(dat$forecasts)) {
       locations <- unique(dat$forecasts$location)
-      if (!is.null(dat$forecasts$location_name)) names(locations) <- unique(dat$forecasts$location_name)
+      if (!is.null(dat$forecasts$location_name)) {
+        names(locations) <- unique(dat$forecasts$location_name)
+      }
       dat$locations <- locations
     }
 
@@ -136,5 +138,4 @@ app_server <- function(input, output, session) {
   output$plot_ui <- renderUI({
     plotOutput("plot", height = ifelse(is.null(dat$locations), 500, length(dat$locations) * 250))
   })
-
 }

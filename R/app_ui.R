@@ -2,7 +2,6 @@
 #' @import shiny
 
 app_ui <- function(request) {
-
   fluidPage(
 
     # Application title

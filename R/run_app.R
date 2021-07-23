@@ -6,7 +6,6 @@
 #' if (interactive()) {
 #'   run_app()
 #' }
-#'
 #' @export
 run_app <- function(...) {
   shinyApp(
