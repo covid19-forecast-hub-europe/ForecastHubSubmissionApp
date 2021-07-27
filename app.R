@@ -1,4 +1,5 @@
-# Launch the ShinyApp (Do not remove this comment)
+# Launch the ShinyApp (Do not remove this comment as it is used by RStudio to
+# auto-detect this is a shiny app launcher.)
 # To deploy, run: rsconnect::deployApp()
 # Or use the blue button on top of this file
 
