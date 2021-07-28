@@ -1,6 +1,7 @@
 #' @author Written by Johannes Bracher, johannes.bacher@@kit.edu
 #' @import shiny
 #' @importFrom graphics legend par text
+#' @importFrom ggplot2 scale_y_continuous coord_cartesian expand_limits xlab
 
 # unix command to change language (for local testing)
 Sys.setlocale(category = "LC_TIME", locale = "en_US.UTF8")
@@ -8,10 +9,14 @@ Sys.setlocale(category = "LC_TIME", locale = "en_US.UTF8")
 # command that should work cross-platform
 # Sys.setlocale(category = "LC_TIME","English")
 
-local <- FALSE # set to FALSE when deploying, TRUE when testing locally
-
-# get truth data:
-data(truth)
+truth <- covidHubUtils::load_truth(
+  truth_source = "JHU",
+  temporal_resolution = "weekly",
+  hub = "ECDC"
+)
+truth$true_value <- truth$value
+truth$model <- NULL
+truth <- truth[, colnames(truth) != "value"]
 
 # adapt column names for matching with targets
 colnames(truth) <- gsub("inc_", "inc ", colnames(truth))
@@ -69,20 +74,36 @@ app_server <- function(input, output, session) {
       # get forecast date:
       forecast_date <- forecasts()$forecast_date[1]
 
-      par(mfrow = c(length(locations()), length(target_vars())), cex = 1)
+      dat <- cbind(
+        forecasts()[, colnames(forecasts()) != "value"],
+        "prediction" = forecasts()$value,
+        "target_variable" = gsub("^\\d+ \\w+ \\w+ (\\w+ \\w+)$", "\\1", forecasts()$target)
+      )
 
-      for (loc in locations()) {
-        for (target_var in target_vars()) {
-          plot_forecast(forecasts(),
-            forecast_date = forecast_date,
-            location = loc,
-            truth = truth, target_type = target_var,
-            levels_coverage = c(0.5, 0.95),
-            start = as.Date(forecast_date) - 35,
-            end = as.Date(forecast_date) + 28
-          )
-        }
-      }
+      dat <- scoringutils::merge_pred_and_obs(
+        dat,
+        truth,
+        "left"
+      )
+
+      filter_both <- list(paste0("target_end_date > '", forecast_date - 35, "'"))
+
+      scoringutils::plot_predictions(
+        dat,
+        x = "target_end_date",
+        facet_wrap_or_grid = "facet_wrap",
+        filter_both = filter_both,
+        facet_formula = location_name ~ target_variable,
+        ncol = length(unique(dat$target_variable)),
+        scales = "free_y",
+        allow_truth_without_pred = TRUE
+      ) +
+        scale_y_continuous(labels = scales::comma) +
+        expand_limits(y = 0) +
+        # Make sure negative values for cases/deaths are not displayed
+        coord_cartesian(ylim = c(0, NA)) +
+        xlab("Week")
+
     } else {
       # if no file is uploaded: empty plot with "Please select a valid csv file"
       plot(NULL, xlim = 0:1, ylim = 0:1, xlab = "", ylab = "", axes = FALSE)
