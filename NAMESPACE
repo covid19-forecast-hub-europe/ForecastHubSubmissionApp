@@ -2,6 +2,10 @@
 
 export(run_app)
 import(shiny)
+importFrom(ggplot2,coord_cartesian)
+importFrom(ggplot2,expand_limits)
+importFrom(ggplot2,scale_y_continuous)
+importFrom(ggplot2,xlab)
 importFrom(grDevices,colorRampPalette)
 importFrom(graphics,abline)
 importFrom(graphics,axis)
