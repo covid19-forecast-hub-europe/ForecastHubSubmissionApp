@@ -4,3 +4,5 @@
 
 [![R-CMD-check](https://github.com/epiforecasts/forecasthub_submission_app/workflows/R-CMD-check/badge.svg)](https://github.com/epiforecasts/forecasthub_submission_app/actions)
 <!-- badges: end -->
+
+A shiny app to preview forecast submissions to a ForecastHub.
