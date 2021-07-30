@@ -31,6 +31,7 @@ app_server <- function(input, output, session) {
   model <- reactiveVal("")
   forecasts <- reactiveVal(NULL)
   locations <- reactiveVal(NULL)
+  target_vars <- reactiveVal(NULL)
 
   # if URL is provided as a URL param
   observeEvent(session$clientData, {
@@ -60,6 +61,9 @@ app_server <- function(input, output, session) {
     if (!is.null(forecasts()$location_name)) {
       names(locations()) <- unique(forecasts()$location_name)
     }
+    target_vars(unique(
+      gsub("^\\d+ \\w+ \\w+ (\\w+ \\w+)$", "\\1", forecasts()$target)
+    ))
   })
 
   # output element to display file name:
@@ -75,38 +79,17 @@ app_server <- function(input, output, session) {
       par(mfrow = c(length(locations()), 2), cex = 1)
 
       for (loc in locations()) {
-        # plot for cases:
-        if (any(grepl("case", forecasts()$target))) { # only if case forecasts available
+        for (target_var in target_vars()) {
           plot_forecast(forecasts(),
-                        forecast_date = forecast_date,
-                        location = loc,
-                        truth = dat_truth, target_type = "inc case",
-                        levels_coverage = c(0.5, 0.95),
-                        start = as.Date(forecast_date) - 35,
-                        end = as.Date(forecast_date) + 28
+            forecast_date = forecast_date,
+            location = loc,
+            truth = dat_truth, target_type = target_var,
+            levels_coverage = c(0.5, 0.95),
+            start = as.Date(forecast_date) - 35,
+            end = as.Date(forecast_date) + 28
           )
-          title(paste0("Incident cases - ", loc))
+          title(paste(target_var, "-", loc))
           legend("topleft", legend = c("50%PI", "95% PI"), col = cols_legend, pch = 15, bty = "n")
-        } else { # otherwise empty plot
-          plot(NULL, xlim = 0:1, ylim = 0:1, xlab = "", ylab = "", axes = FALSE)
-          text(0.5, 0.5, paste("No case forecasts found."))
-        }
-
-        # plot for deaths:
-        if (any(grepl("death", forecasts()$target))) { # only if case forecasts available
-          plot_forecast(forecasts(),
-                        forecast_date = forecast_date,
-                        location = loc,
-                        truth = dat_truth, target_type = "inc death",
-                        levels_coverage = c(0.5, 0.95),
-                        start = as.Date(forecast_date) - 37,
-                        end = as.Date(forecast_date) + 28
-          )
-          title(paste0("Incident deaths - ", loc))
-          legend("topleft", legend = c("50%PI", "95% PI"), col = cols_legend, pch = 15, bty = "n")
-        } else { # otherwise empty plot
-          plot(NULL, xlim = 0:1, ylim = 0:1, xlab = "", ylab = "", axes = FALSE)
-          text(0.5, 0.5, paste("No  death forecasts found."))
         }
       }
     } else {
