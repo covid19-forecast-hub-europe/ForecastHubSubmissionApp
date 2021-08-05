@@ -47,7 +47,7 @@ determine_ylim <- function(forecasts, forecast_date = NULL, target_type, horizon
     0.95 * min(c(forecasts$value, truth[, target_type]))
   }
   truth <- truth[truth$location == location, ]
-  ylim <- c(lower, 1.05 * max(c(forecasts$value, truth[, target_type])))
+  ylim <- c(lower, 1.05 * max(c(forecasts$value, truth[, target_type]), na.rm = TRUE))
 }
 
 #' Create an empty plot to which forecasts can be added
