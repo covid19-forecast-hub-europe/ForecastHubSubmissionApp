@@ -76,7 +76,7 @@ app_server <- function(input, output, session) {
       # get forecast date:
       forecast_date <- forecasts()$forecast_date[1]
 
-      par(mfrow = c(length(locations()), 2), cex = 1)
+      par(mfrow = c(length(locations()), length(target_vars())), cex = 1)
 
       for (loc in locations()) {
         for (target_var in target_vars()) {
