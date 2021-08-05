@@ -41,10 +41,6 @@ subset_forecasts_for_plot <- function(forecasts, forecast_date = NULL, target_ty
 #'
 determine_ylim <- function(forecasts, forecast_date = NULL, target_type, horizon, location, truth, start_at_zero = TRUE) {
   truth <- subset(truth, date >= forecast_date - 28)
-  forecasts <- subset_forecasts_for_plot(
-    forecasts = forecasts, forecast_date = forecast_date,
-    target_type = target_type, horizon = horizon, location = location
-  )
   lower <- if (start_at_zero) {
     0
   } else {
@@ -82,12 +78,6 @@ empty_plot <- function(xlim, ylim, xlab, ylab) {
 draw_prediction_band <- function(forecasts, forecast_date = NULL, target_type, horizon,
                                  location, coverage, col = "lightgrey") {
   if (!coverage %in% c(1:9 / 10, 0.95, 0.98)) stop("Coverage needs to be from 0.1, 0.2, ..., 0.9, 0.95, 0.98")
-
-  forecasts <- subset_forecasts_for_plot(
-    forecasts = forecasts, forecast_date = forecast_date,
-    target_type = target_type, horizon = horizon, location = location,
-    type = "quantile"
-  )
 
   # select points to draw polygon:
   lower <- forecasts[abs(forecasts$quantile - (1 - coverage) / 2) < 0.01, ]
@@ -193,6 +183,12 @@ plot_forecast <- function(forecasts,
   forecasts <- forecasts[forecasts$target_end_date >= start & forecasts$target_end_date <= end, ]
   truth <- truth[truth$date >= start & truth$location == location, ]
   xlim <- c(start, end)
+
+  forecasts <- subset_forecasts_for_plot(
+    forecasts = forecasts, forecast_date = forecast_date,
+    target_type = target_type, horizon = horizon, location = location,
+    type = "quantile"
+  )
 
   if (is.null(ylim)) {
     ylim <- determine_ylim(
