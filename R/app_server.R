@@ -88,8 +88,6 @@ app_server <- function(input, output, session) {
             start = as.Date(forecast_date) - 35,
             end = as.Date(forecast_date) + 28
           )
-          title(paste(target_var, "-", loc))
-          legend("topleft", legend = c("50%PI", "95% PI"), col = cols_legend, pch = 15, bty = "n")
         }
       }
     } else {
