@@ -62,8 +62,7 @@ app_ui <- function(request) {
             ),
             hr(),
             tags$footer(
-              a("Source code. ", href = "https://github.com/epiforecasts/ForecastHubSubmissionApp"),
-              "Deployed version: ", substr(gert::git_commit_id(), 1, 7)
+              a("Source code. ", href = "https://github.com/epiforecasts/ForecastHubSubmissionApp")
             )
           )
         )
