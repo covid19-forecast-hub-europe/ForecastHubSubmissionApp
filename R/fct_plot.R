@@ -190,6 +190,12 @@ plot_forecast <- function(forecasts,
     type = "quantile"
   )
 
+  if (nrow(forecasts) == 0) {
+    plot(NULL, xlim = 0:1, ylim = 0:1, xlab = "", ylab = "", axes = FALSE)
+    text(0.5, 0.5, paste("No forecasts found."))
+    return()
+  }
+
   if (is.null(ylim)) {
     ylim <- determine_ylim(
       forecasts = forecasts, forecast_date = forecast_date,
