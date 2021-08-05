@@ -59,6 +59,11 @@ app_ui <- function(request) {
               tags$b("Plausible skewness:"),
               "As count outcomes have a natural lower limit (zero), they often have a right-skewed distribution. This means that typically the median will",
               "be closer to the lower than the upper end of your forecast intervals."
+            ),
+            hr(),
+            tags$footer(
+              a("Source code. ", href = "https://github.com/epiforecasts/ForecastHubSubmissionApp"),
+              "Deployed version: ", substr(gert::git_commit_id(), 1, 7)
             )
           )
         )
