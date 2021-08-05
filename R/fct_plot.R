@@ -218,4 +218,7 @@ plot_forecast <- function(forecasts,
     location = location, col = col_point
   )
   draw_truths(truth = truth, location = location, target_type = target_type)
+
+  title(paste(target_type, "-", location))
+  legend("topleft", legend = c("50%PI", "95% PI"), col = cols_legend, pch = 15, bty = "n")
 }
