@@ -16,8 +16,10 @@ if (local) {
                         colClasses = list("date" = "Date"), stringsAsFactors = FALSE
   )
 } else {
-  dat_truth <- read.csv("https://raw.githubusercontent.com/epiforecasts/covid19-forecast-hub-europe/main/viz/truth_to_plot.csv",
-                        colClasses = list("date" = "Date"), stringsAsFactors = FALSE
+  current_week <- format(Sys.Date(), "W%W")
+  dat_truth <- read.csv(
+    paste0("https://covid19-forecasthub-cdn.azureedge.net/data/truth_to_plot.csv?week=", current_week),
+    colClasses = list("date" = "Date"), stringsAsFactors = FALSE
   )
 }
 # adapt column names for matching with targets
