@@ -11,18 +11,8 @@ Sys.setlocale(category = "LC_TIME", locale = "en_US.UTF8")
 local <- FALSE # set to FALSE when deploying, TRUE when testing locally
 
 # get truth data:
+data(truth)
 
-if (local) {
-  truth <- read.csv("../../viz/truth_to_plot.csv",
-                        colClasses = list("date" = "Date"), stringsAsFactors = FALSE
-  )
-} else {
-  current_week <- format(Sys.Date(), "W%W")
-  truth <- read.csv(
-    paste0("https://covid19-forecasthub-cdn.azureedge.net/data/truth_to_plot.csv?week=", current_week),
-    colClasses = list("date" = "Date"), stringsAsFactors = FALSE
-  )
-}
 # adapt column names for matching with targets
 colnames(truth) <- gsub("inc_", "inc ", colnames(truth))
 
