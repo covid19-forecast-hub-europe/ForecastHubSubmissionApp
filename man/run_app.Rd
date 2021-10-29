@@ -16,5 +16,4 @@ Run shiny app
 if (interactive()) {
   run_app()
 }
-
 }
