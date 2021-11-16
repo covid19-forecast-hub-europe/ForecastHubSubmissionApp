@@ -74,16 +74,16 @@ app_server <- function(input, output, session) {
       # get forecast date:
       forecast_date <- forecasts()$forecast_date[1]
 
-      dat <- cbind(
+      fcasts <- cbind(
         forecasts()[, colnames(forecasts()) != "value"],
         "prediction" = forecasts()$value,
         "target_variable" = gsub("^\\d+ \\w+ \\w+ (\\w+ \\w+)$", "\\1", forecasts()$target)
       )
-      truth <- truth[truth$target_variable %in% dat$target_variable, ]
-      truth <- truth[truth$location %in% dat$location, ]
+      truth <- truth[truth$target_variable %in% fcasts$target_variable, ]
+      truth <- truth[truth$location %in% fcasts$location, ]
 
       dat <- scoringutils::merge_pred_and_obs(
-        dat,
+        fcasts,
         truth,
         "full"
       )
