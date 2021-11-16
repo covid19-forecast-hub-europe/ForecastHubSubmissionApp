@@ -79,11 +79,13 @@ app_server <- function(input, output, session) {
         "prediction" = forecasts()$value,
         "target_variable" = gsub("^\\d+ \\w+ \\w+ (\\w+ \\w+)$", "\\1", forecasts()$target)
       )
+      truth <- truth[truth$target_variable %in% dat$target_variable, ]
+      truth <- truth[truth$location %in% dat$location, ]
 
       dat <- scoringutils::merge_pred_and_obs(
         dat,
         truth,
-        "left"
+        "full"
       )
 
       filter_both <- list(paste0("target_end_date > '", forecast_date - 35, "'"))
