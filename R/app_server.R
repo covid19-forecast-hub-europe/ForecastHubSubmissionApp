@@ -95,7 +95,7 @@ app_server <- function(input, output, session) {
         x = "target_end_date",
         facet_wrap_or_grid = "facet_wrap",
         filter_both = filter_both,
-        facet_formula = location_name ~ target_variable,
+        facet_formula = location ~ target_variable,
         ncol = length(unique(dat$target_variable)),
         scales = "free_y",
         allow_truth_without_pred = TRUE
