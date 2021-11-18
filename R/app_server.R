@@ -79,6 +79,17 @@ app_server <- function(input, output, session) {
         "prediction" = forecasts()$value,
         "target_variable" = gsub("^\\d+ \\w+ \\w+ (\\w+ \\w+)$", "\\1", forecasts()$target)
       )
+
+      fcasts <- tidyr::complete(
+        fcasts,
+        location,
+        target_variable,
+        target_end_date,
+        forecast_date,
+        tidyr::nesting(type, quantile),
+        fill = list(prediction = -Inf)
+      )
+
       truth <- truth[truth$target_variable %in% fcasts$target_variable, ]
       truth <- truth[truth$location %in% fcasts$location, ]
 
