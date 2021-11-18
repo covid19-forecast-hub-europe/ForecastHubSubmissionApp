@@ -5,7 +5,7 @@
 \alias{truth}
 \title{Truth data set containing observed cases}
 \format{
-An object of class \code{data.frame} with 2949 rows and 6 columns.
+An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 7659 rows and 6 columns.
 }
 \source{
 Automatically generated and updated by \url{https://github.com/epiforecasts/covid19-forecast-hub-europe/blob/main/viz/prepare_truth_data.R}
