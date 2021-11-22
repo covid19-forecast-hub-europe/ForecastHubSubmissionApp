@@ -21,7 +21,12 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@v1
         with:
-          extra-packages: rsconnect
+          extra-packages: |
+            rsconnect
+            RcppArmadillo
+            cpp11
+            prettyunits
+            progress
 
       - name: Push to shinyapps.io
         run: |
