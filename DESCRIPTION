@@ -23,11 +23,9 @@ Imports:
     scoringutils,
     shiny,
     scales,
-    tidyr,
-    zoltr
+    tidyr
 Remotes:
-    reichlab/covidHubUtils,
-    reichlab/zoltr
+    reichlab/covidHubUtils
 Config/testthat/edition: 3
 Encoding: UTF-8
 Language: en-GB
