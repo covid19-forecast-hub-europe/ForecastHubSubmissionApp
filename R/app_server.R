@@ -109,6 +109,7 @@ app_server <- function(input, output, session) {
         facet_formula = location ~ target_variable,
         ncol = length(unique(dat$target_variable)),
         scales = "free_y",
+        range = c(0, 50, 95),
         allow_truth_without_pred = TRUE
       ) +
         scale_y_continuous(labels = scales::comma) +
