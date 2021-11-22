@@ -23,7 +23,8 @@ Imports:
     scoringutils,
     shiny,
     scales,
-    tidyr
+    tidyr,
+    zoltr
 Remotes:
     reichlab/covidHubUtils,
     reichlab/zoltr
