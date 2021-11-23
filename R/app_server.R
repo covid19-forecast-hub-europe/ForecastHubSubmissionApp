@@ -57,7 +57,7 @@ app_server <- function(input, output, session) {
   observeEvent(forecasts(), {
     locations(unique(forecasts()$location))
     if (!is.null(forecasts()$location_name)) {
-      names(locations()) <- unique(forecasts()$location_name)
+      locations(stats::setNames(locations(), unique(forecasts()$location_name)))
     }
     target_vars(unique(
       gsub("^\\d+ \\w+ \\w+ (\\w+ \\w+)$", "\\1", forecasts()$target)
