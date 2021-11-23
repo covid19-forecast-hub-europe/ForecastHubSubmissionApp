@@ -1,7 +1,7 @@
 #' @author Written by Johannes Bracher, johannes.bacher@@kit.edu
 #' @import shiny
 #' @importFrom graphics legend par text
-#' @importFrom ggplot2 scale_y_continuous coord_cartesian expand_limits xlab
+#' @importFrom ggplot2 scale_y_continuous coord_cartesian expand_limits xlab .data
 
 # unix command to change language (for local testing)
 Sys.setlocale(category = "LC_TIME", locale = "en_US.UTF8")
@@ -82,10 +82,10 @@ app_server <- function(input, output, session) {
 
       fcasts <- tidyr::complete(
         fcasts,
-        location,
-        target_variable,
-        target_end_date,
-        forecast_date,
+        .data$location,
+        .data$target_variable,
+        .data$target_end_date,
+        .data$forecast_date,
         tidyr::nesting(type, quantile),
         fill = list(prediction = -Inf)
       )
