@@ -1,5 +1,6 @@
 on:
   workflow_dispatch:
+  schedule: '0 14 * * 6'
   push:
     branches:
       - main
