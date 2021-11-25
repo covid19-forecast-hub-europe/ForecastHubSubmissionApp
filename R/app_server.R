@@ -21,15 +21,11 @@ truth <- truth[, colnames(truth) != "value"]
 # adapt column names for matching with targets
 colnames(truth) <- gsub("inc_", "inc ", colnames(truth))
 
-# define colors
-cols_legend <- c("#699DAF", "#D3D3D3")
-
 app_server <- function(input, output, session) {
 
   model <- reactiveVal("")
   forecasts <- reactiveVal(NULL)
   locations <- reactiveVal(NULL)
-  target_vars <- reactiveVal(NULL)
 
   # if URL is provided as a URL param
   observeEvent(session$clientData, {
@@ -59,9 +55,6 @@ app_server <- function(input, output, session) {
     if (!is.null(forecasts()$location_name)) {
       locations(stats::setNames(locations(), unique(forecasts()$location_name)))
     }
-    target_vars(unique(
-      gsub("^\\d+ \\w+ \\w+ (\\w+ \\w+)$", "\\1", forecasts()$target)
-    ))
   })
 
   # output element to display file name:
