@@ -77,7 +77,6 @@ app_server <- function(input, output, session) {
         fcasts,
         .data$location,
         .data$target_variable,
-        .data$target_end_date,
         .data$forecast_date,
         tidyr::nesting(type, quantile),
         fill = list(prediction = -Inf)
