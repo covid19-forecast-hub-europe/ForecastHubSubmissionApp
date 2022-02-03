@@ -1,7 +1,7 @@
 #' @author Written by Johannes Bracher, johannes.bacher@@kit.edu
 #' @import shiny
 #' @importFrom graphics legend par text
-#' @importFrom ggplot2 scale_y_continuous coord_cartesian expand_limits xlab .data aes
+#' @importFrom ggplot2 scale_y_continuous coord_cartesian expand_limits xlab .data aes scale_fill_viridis_d
 
 # unix command to change language (for local testing)
 Sys.setlocale(category = "LC_TIME", locale = "en_US.UTF8")
@@ -111,7 +111,9 @@ app_server <- function(input, output, session) {
         xlab("Week")
 
       if (hasName(dat, "scenario_id")) {
-        p + aes(fill = scenario_id)
+        p +
+          aes(fill = scenario_id) +
+          scale_fill_viridis_d(alpha = 0.5)
       } else {
         p
       }
