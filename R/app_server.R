@@ -79,7 +79,7 @@ app_server <- function(input, output, session) {
         .data$target_variable,
         .data$forecast_date,
         tidyr::nesting(type, quantile),
-        fill = list(prediction = -Inf)
+        fill = list(prediction = -1e6)
       )
 
       truth <- truth[truth$target_variable %in% fcasts$target_variable, ]
