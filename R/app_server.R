@@ -1,7 +1,7 @@
 #' @author Written by Johannes Bracher, johannes.bacher@@kit.edu
 #' @import shiny
 #' @importFrom graphics legend par text
-#' @importFrom ggplot2 scale_y_continuous coord_cartesian expand_limits xlab .data
+#' @importFrom ggplot2 scale_y_continuous coord_cartesian expand_limits xlab .data aes
 
 # unix command to change language (for local testing)
 Sys.setlocale(category = "LC_TIME", locale = "en_US.UTF8")
@@ -93,7 +93,7 @@ app_server <- function(input, output, session) {
 
       filter_both <- list(paste0("target_end_date > '", forecast_date - 35, "'"))
 
-      scoringutils::plot_predictions(
+      p <- scoringutils::plot_predictions(
         dat,
         x = "target_end_date",
         facet_wrap_or_grid = "facet_wrap",
@@ -109,6 +109,12 @@ app_server <- function(input, output, session) {
         # Make sure negative values for cases/deaths are not displayed
         coord_cartesian(ylim = c(0, NA)) +
         xlab("Week")
+
+      if (hasName(dat, "scenario_id")) {
+        p + aes(fill = scenario_id)
+      } else {
+        p
+      }
 
     } else {
       # if no file is uploaded: empty plot with "Please select a valid csv file"
