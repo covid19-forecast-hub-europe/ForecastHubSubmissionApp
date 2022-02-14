@@ -1,7 +1,7 @@
 #' @author Written by Johannes Bracher, johannes.bacher@@kit.edu
 #' @import shiny
 #' @importFrom graphics legend par text
-#' @importFrom ggplot2 scale_y_continuous coord_cartesian expand_limits xlab .data aes scale_fill_viridis_d
+#' @importFrom ggplot2 scale_y_continuous coord_cartesian expand_limits xlab .data aes scale_fill_viridis_d theme
 
 # unix command to change language (for local testing)
 Sys.setlocale(category = "LC_TIME", locale = "en_US.UTF8")
@@ -108,7 +108,8 @@ app_server <- function(input, output, session) {
         expand_limits(y = 0) +
         # Make sure negative values for cases/deaths are not displayed
         coord_cartesian(ylim = c(0, NA)) +
-        xlab("Week")
+        xlab("Week") +
+        theme(legend.position = "top")
 
       if (hasName(dat, "scenario_id")) {
         p +
