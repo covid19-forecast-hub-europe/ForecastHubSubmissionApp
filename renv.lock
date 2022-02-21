@@ -191,10 +191,10 @@
     },
     "cli": {
       "Package": "cli",
-      "Version": "3.1.1",
+      "Version": "3.2.0",
       "Source": "Repository",
       "Repository": "RSPM",
-      "Hash": "da5160e769a652e3ec7111d63883f9bc",
+      "Hash": "1bdb126893e9ce6aae50ad1d6fc32faf",
       "Requirements": [
         "glue"
       ]
@@ -235,14 +235,14 @@
       "Package": "covidHubUtils",
       "Version": "0.1.6",
       "Source": "GitHub",
-      "Remotes": "reichlab/zoltr",
       "RemoteType": "github",
-      "RemoteHost": "api.github.com",
-      "RemoteRepo": "covidHubUtils",
       "RemoteUsername": "reichlab",
+      "RemoteRepo": "covidHubUtils",
       "RemoteRef": "HEAD",
-      "RemoteSha": "b68fa5a9d06d3e9c9545c909309872a3caf6c8f9",
-      "Hash": "2fb28d990623504692f5978defb85664",
+      "RemoteSha": "cc3ef283e5a72b27d5ea151a575fccdcef934180",
+      "RemoteHost": "api.github.com",
+      "Remotes": "reichlab/zoltr",
+      "Hash": "a2f218dfeff6fb4c977b7293b7e0e6b3",
       "Requirements": [
         "MMWRweek",
         "RColorBrewer",
@@ -279,10 +279,10 @@
     },
     "crayon": {
       "Package": "crayon",
-      "Version": "1.4.2",
+      "Version": "1.5.0",
       "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "0a6a65d92bd45b47b94b84244b528d17",
+      "Repository": "RSPM",
+      "Hash": "741c2e098e98afe3dc26a7b0e5489f4e",
       "Requirements": []
     },
     "credentials": {
@@ -381,10 +381,10 @@
     },
     "doParallel": {
       "Package": "doParallel",
-      "Version": "1.0.16",
+      "Version": "1.0.17",
       "Source": "Repository",
       "Repository": "RSPM",
-      "Hash": "2dc413572eb42475179bfe0afabd2adf",
+      "Hash": "451e5edf411987991ab6a5410c45011f",
       "Requirements": [
         "foreach",
         "iterators"
@@ -392,13 +392,12 @@
     },
     "dplyr": {
       "Package": "dplyr",
-      "Version": "1.0.7",
+      "Version": "1.0.8",
       "Source": "Repository",
       "Repository": "RSPM",
-      "Hash": "36f1ae62f026c8ba9f9b5c9a08c03297",
+      "Hash": "ef47665e64228a17609d6df877bf86f2",
       "Requirements": [
         "R6",
-        "ellipsis",
         "generics",
         "glue",
         "lifecycle",
@@ -422,10 +421,10 @@
     },
     "evaluate": {
       "Package": "evaluate",
-      "Version": "0.14",
+      "Version": "0.15",
       "Source": "Repository",
-      "Repository": "RSPM",
-      "Hash": "ec8ca05cffcc70569eaaad8469d2a3a7",
+      "Repository": "CRAN",
+      "Hash": "699a7a93d08c962d9f8950b2d7a227f1",
       "Requirements": []
     },
     "fansi": {
@@ -532,16 +531,15 @@
     },
     "ggdist": {
       "Package": "ggdist",
-      "Version": "3.0.99.9000",
+      "Version": "3.1.0.9000",
       "Source": "GitHub",
-      "Remotes": "r-lib/svglite",
       "RemoteType": "github",
-      "RemoteHost": "api.github.com",
-      "RemoteRepo": "ggdist",
       "RemoteUsername": "mjskay",
+      "RemoteRepo": "ggdist",
       "RemoteRef": "HEAD",
-      "RemoteSha": "163e702dde4a6c2211f32fee6b3baaa3fb7a0d61",
-      "Hash": "a4358e114f5404b52df330c33054c3d0",
+      "RemoteSha": "83d0123be713aeaa8f6953c72a8477a9de2b81ab",
+      "RemoteHost": "api.github.com",
+      "Hash": "6764a1faaf2dc1d0f808adabdad5912b",
       "Requirements": [
         "HDInterval",
         "distributional",
@@ -559,10 +557,10 @@
     },
     "ggnewscale": {
       "Package": "ggnewscale",
-      "Version": "0.4.5",
+      "Version": "0.4.6",
       "Source": "Repository",
       "Repository": "RSPM",
-      "Hash": "5d2d9029aa89360eb283e3d10ab8bf42",
+      "Hash": "22f402422965796b053c5a35a218c94a",
       "Requirements": [
         "ggplot2"
       ]
@@ -592,14 +590,6 @@
       "Source": "Repository",
       "Repository": "RSPM",
       "Hash": "de07842fc27ebf60e1102091c0c85e47",
-      "Requirements": []
-    },
-    "goftest": {
-      "Package": "goftest",
-      "Version": "1.2-3",
-      "Source": "Repository",
-      "Repository": "RSPM",
-      "Hash": "dbe0201f91eeb15918dd3fbf01ee689a",
       "Requirements": []
     },
     "gtable": {
@@ -692,10 +682,10 @@
     },
     "iterators": {
       "Package": "iterators",
-      "Version": "1.0.13",
+      "Version": "1.0.14",
       "Source": "Repository",
       "Repository": "RSPM",
-      "Hash": "64778782a89480e9a644f69aad9a2877",
+      "Hash": "8954069286b4b2b0d023d1b288dce978",
       "Requirements": []
     },
     "jquerylib": {
@@ -808,10 +798,10 @@
     },
     "mockery": {
       "Package": "mockery",
-      "Version": "0.4.2",
+      "Version": "0.4.3",
       "Source": "Repository",
-      "Repository": "RSPM",
-      "Hash": "313fa6504824ba5aab9308412135fb5f",
+      "Repository": "CRAN",
+      "Hash": "c28ce5f7c2293d76b91657f3fe30c50b",
       "Requirements": [
         "testthat"
       ]
@@ -1111,22 +1101,19 @@
     },
     "scoringutils": {
       "Package": "scoringutils",
-      "Version": "0.1.8",
+      "Version": "1.0.0",
       "Source": "GitHub",
-      "Remotes": "mjskay/ggdist",
       "RemoteType": "github",
       "RemoteHost": "api.github.com",
       "RemoteRepo": "scoringutils",
       "RemoteUsername": "epiforecasts",
-      "RemoteRef": "issue-174",
-      "RemoteSha": "59a7a471f27e2c6a2f0c35be6204ec0c64aebee8",
-      "Hash": "9c854d4dcb9a3dfd2621e2014ac5385f",
+      "RemoteRef": "major-update",
+      "RemoteSha": "a465c843cf5f0efd7881154ff0a3fd957359a221",
+      "Hash": "af0066fc106c67f8a0f2d0617be25811",
       "Requirements": [
         "data.table",
-        "forcats",
         "ggdist",
         "ggplot2",
-        "goftest",
         "scoringRules"
       ]
     },
@@ -1423,10 +1410,10 @@
     },
     "yaml": {
       "Package": "yaml",
-      "Version": "2.2.2",
+      "Version": "2.3.5",
       "Source": "Repository",
-      "Repository": "RSPM",
-      "Hash": "4597f73aad7d32c2913ec33a345f900b",
+      "Repository": "CRAN",
+      "Hash": "458bb38374d73bf83b1bb85e353da200",
       "Requirements": []
     },
     "zip": {
