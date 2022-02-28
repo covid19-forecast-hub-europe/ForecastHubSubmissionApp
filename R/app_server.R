@@ -71,8 +71,7 @@ app_server <- function(input, output, session) {
 
       fcasts <- cbind(
         forecasts()[, colnames(forecasts()) != "value"],
-        "prediction" = forecasts()$value,
-        "target_variable" = gsub("^\\d+ \\w+ \\w+ (\\w+ \\w+)$", "\\1", forecasts()$target)
+        "prediction" = forecasts()$value
       )
 
       fcasts <- tidyr::complete(
