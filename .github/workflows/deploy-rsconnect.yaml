@@ -26,5 +26,5 @@ jobs:
 
       - name: Push to shinyapps.io
         run: |
-          Rscript -e "rsconnect::setAccountInfo(name='forecasthub, token='${{secrets.SHINYAPPS_TOKEN}}', secret='${{secrets.SHINYAPPS_SECRET}}')"
+          Rscript -e "rsconnect::setAccountInfo(name='forecasthub', token='${{secrets.SHINYAPPS_TOKEN}}', secret='${{secrets.SHINYAPPS_SECRET}}')"
           Rscript -e "rsconnect::deployApp(appTitle = 'covid19-forecast-hub-europe')"
