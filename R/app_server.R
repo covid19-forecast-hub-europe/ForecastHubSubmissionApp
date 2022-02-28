@@ -16,6 +16,8 @@ truth <- covidHubUtils::load_truth(
 )
 truth$true_value <- truth$value
 truth$model <- NULL
+truth$origin_date <- truth$forecast_date
+truth$forecast_date <- NULL
 truth <- truth[, colnames(truth) != "value"]
 
 # adapt column names for matching with targets
@@ -65,7 +67,7 @@ app_server <- function(input, output, session) {
     if (!is.null(forecasts())) {
 
       # get forecast date:
-      forecast_date <- forecasts()$forecast_date[1]
+      forecast_date <- forecasts()$origin_date[1]
 
       fcasts <- cbind(
         forecasts()[, colnames(forecasts()) != "value"],
@@ -77,7 +79,7 @@ app_server <- function(input, output, session) {
         fcasts,
         .data$location,
         .data$target_variable,
-        .data$forecast_date,
+        .data$origin_date,
         tidyr::nesting(type, quantile),
         fill = list(prediction = -1e6)
       )
