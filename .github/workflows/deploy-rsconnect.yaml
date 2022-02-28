@@ -19,12 +19,12 @@ jobs:
 
       - uses: r-lib/actions/setup-r@master
         with:
-          r-version: '4.1.1'
+          install-r: false
           use-public-rspm: true
 
       - uses: r-lib/actions/setup-renv@v2
 
       - name: Push to shinyapps.io
         run: |
-          Rscript -e "rsconnect::setAccountInfo(name='epiforecasts', token=${{secrets.SHINYAPPS_TOKEN}}, secret=${{secrets.SHINYAPPS_SECRET}})"
-          Rscript -e "rsconnect::deployApp(appName = 'ecdc_submission')"
+          Rscript -e "rsconnect::setAccountInfo(name='forecasthub, token='${{secrets.SHINYAPPS_TOKEN}}', secret='${{secrets.SHINYAPPS_SECRET}}')"
+          Rscript -e "rsconnect::deployApp(appTitle = 'covid19-forecast-hub-europe')"
