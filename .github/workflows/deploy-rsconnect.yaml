@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - main
+      - scenario-hub
 
 name: deploy-rsconnect
 
@@ -25,6 +26,13 @@ jobs:
       - uses: r-lib/actions/setup-renv@v2
 
       - name: Push to shinyapps.io
+        if: ${{ github.ref }} == "main"
         run: |
           Rscript -e "rsconnect::setAccountInfo(name='forecasthub', token='${{secrets.SHINYAPPS_TOKEN}}', secret='${{secrets.SHINYAPPS_SECRET}}')"
           Rscript -e "rsconnect::deployApp(appTitle = 'covid19-forecast-hub-europe')"
+
+      - name: Push to shinyapps.io
+        if: ${{ github.ref }} == "scenario-hub"
+        run: |
+          Rscript -e "rsconnect::setAccountInfo(name='forecasthub', token='${{secrets.SHINYAPPS_TOKEN}}', secret='${{secrets.SHINYAPPS_SECRET}}')"
+          Rscript -e "rsconnect::deployApp(appTitle = 'covid19-scenario-hub-europe')"
