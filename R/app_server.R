@@ -16,8 +16,6 @@ truth <- covidHubUtils::load_truth(
 )
 truth$true_value <- truth$value
 truth$model <- NULL
-truth$origin_date <- truth$forecast_date
-truth$forecast_date <- NULL
 truth <- truth[, colnames(truth) != "value"]
 
 # adapt column names for matching with targets
@@ -67,7 +65,7 @@ app_server <- function(input, output, session) {
     if (!is.null(forecasts())) {
 
       # get forecast date:
-      forecast_date <- forecasts()$origin_date[1]
+      origin_date <- forecasts()$origin_date[1]
 
       fcasts <- cbind(
         forecasts()[, colnames(forecasts()) != "value"],
@@ -92,7 +90,8 @@ app_server <- function(input, output, session) {
         "full"
       )
 
-      filter_both <- list(paste0("target_end_date > '", forecast_date - 35, "'"))
+      filter_both <- list(paste0("target_end_date > '", origin_date - 35, "'"))
+      browser()
 
       p <- scoringutils::plot_predictions(
         dat,

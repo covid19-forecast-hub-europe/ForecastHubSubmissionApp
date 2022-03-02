@@ -4,8 +4,8 @@
 #'
 #' @importFrom utils read.csv
 read_week_ahead <- function(file) {
-  dat <- read.csv(file, colClasses = c(location = "character", forecast_date = "Date", target_end_date = "Date"), stringsAsFactors = FALSE)
+  dat <- read.csv(file, colClasses = c(location = "character", origin_date = "Date", target_end_date = "Date"), stringsAsFactors = FALSE)
   return(
-    dat[grepl("^[1234] wk ahead", dat$target), ]
+    dat[grepl("^\\d+ wk", dat$horizon), ]
   )
 }
