@@ -91,7 +91,6 @@ app_server <- function(input, output, session) {
       )
 
       filter_both <- list(paste0("target_end_date > '", origin_date - 35, "'"))
-      browser()
 
       p <- scoringutils::plot_predictions(
         dat,
