@@ -1,0 +1,30 @@
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 14 * * 6"
+  push:
+    branches:
+      - main
+
+name: deploy-rsconnect
+
+jobs:
+  deploy-shiny:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+
+      - uses: actions/checkout@v2
+
+      - uses: r-lib/actions/setup-r@master
+        with:
+          install-r: false
+          use-public-rspm: true
+
+      - uses: r-lib/actions/setup-renv@v2
+
+      - name: Push to shinyapps.io
+        run: |
+          Rscript -e "rsconnect::setAccountInfo(name='forecasthub', token='${{secrets.SHINYAPPS_TOKEN}}', secret='${{secrets.SHINYAPPS_SECRET}}')"
+          Rscript -e "rsconnect::deployApp(appTitle = 'covid19-forecast-hub-europe')"
