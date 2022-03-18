@@ -5,7 +5,7 @@ app_ui <- function(request) {
   fluidPage(
 
     # Application title
-    titlePanel("Visualize your submission to the European COVID19 Forecast Hub"),
+    titlePanel("Visualize your submission"),
 
     # Sidebar with control elements
     sidebarLayout(
@@ -20,7 +20,7 @@ app_ui <- function(request) {
         tags$style("#result_checks {font-size:15px;
                  font-family:'Courier New';
                  display:block; }"),
-        h4("Forecast visualization (may take a few seconds to load):"),
+        h4("Preview of submission (may take a few seconds to load):"),
         textOutput(outputId = "file_name"), # paste name of visualized file
         # plotOutput("plot"), # plot
         uiOutput("plot_ui"),
@@ -44,16 +44,16 @@ app_ui <- function(request) {
               "pronounced and unexpected jumps between last observed data and predictions can indicate technical problems."
             ),
             tags$li(
-              tags$b("Plausible pattern across forecast horizons:"),
-              "if forecasts one through four weeks ahead are not 'smooth' this may indicate problems (unless there is a plausible explanation)."
+              tags$b("Plausible pattern across time horizons:"),
+              "if projections for successive time steps are not 'smooth' this may indicate problems (unless there is a plausible explanation)."
             ),
             tags$li(
               tags$b("Appropriate degree of dispersion:"),
-              "Check whether you are confident that the 50% and 95% forecast intervals will cover the observations in 50% and 95% of the cases, respectively."
+              "Check whether you are confident that the 50% and 95% intervals will cover the observations in 50% and 95% of the cases, respectively."
             ),
             tags$li(
-              tags$b("Dispersion increases with forecast horizon:"),
-              "Forecast uncertainty often (though not always) increases somewhat for larger horizons as events further in the future are typically harder to predict."
+              tags$b("Dispersion increases with time horizon:"),
+              "Uncertainty often (though not always) increases somewhat for larger horizons as events further in the future are typically harder to predict."
             ),
             tags$li(
               tags$b("Plausible skewness:"),
