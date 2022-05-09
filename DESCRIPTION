@@ -14,9 +14,10 @@ Authors@R: c(
 Description: What the package does (one paragraph).
 License: MIT + file LICENSE
 Depends:
-    R (>= 3.5.0)
+    R (>= 4.1.0)
 Imports:
     covidHubUtils,
+    dplyr,
     gert,
     ggplot2,
     pkgload,

@@ -67,11 +67,11 @@ app_server <- function(input, output, session) {
       # get forecast date:
       forecast_date <- forecasts()$forecast_date[1]
 
-      fcasts <- cbind(
-        forecasts()[, colnames(forecasts()) != "value"],
-        "prediction" = forecasts()$value,
-        "target_variable" = gsub("^\\d+ \\w+ \\w+ (\\w+ \\w+)$", "\\1", forecasts()$target)
-      )
+      fcasts <- forecasts() |>
+        dplyr::mutate(
+          prediction = value,
+          target_variable = gsub("^\\d+ \\w+ \\w+ (\\w+ \\w+)$", "\\1", target)
+        )
 
       fcasts <- tidyr::complete(
         fcasts,
