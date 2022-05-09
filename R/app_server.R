@@ -70,6 +70,13 @@ app_server <- function(input, output, session) {
       fcasts <- forecasts() |>
         dplyr::rename(prediction = value)
 
+      if (!hasName(fcasts, "quantile")) {
+        fcasts <- fcasts |>
+          dplyr::rename(var = type) |>
+          scoringutils::sample_to_quantile() |>
+          dplyr::rename(type = var)
+      }
+
       fcasts <- tidyr::complete(
         fcasts,
         .data$location,
