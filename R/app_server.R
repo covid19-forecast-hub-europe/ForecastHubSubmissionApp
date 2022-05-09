@@ -67,10 +67,8 @@ app_server <- function(input, output, session) {
       # get forecast date:
       origin_date <- forecasts()$origin_date[1]
 
-      fcasts <- cbind(
-        forecasts()[, colnames(forecasts()) != "value"],
-        "prediction" = forecasts()$value
-      )
+      fcasts <- forecasts() |>
+        dplyr::rename(prediction = value)
 
       fcasts <- tidyr::complete(
         fcasts,
