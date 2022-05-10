@@ -70,7 +70,8 @@ app_server <- function(input, output, session) {
       fcasts <- forecasts() |>
         dplyr::mutate(
           prediction = value,
-          target_variable = gsub("^\\d+ \\w+ \\w+ (\\w+ \\w+)$", "\\1", target)
+          target_variable = gsub("^\\d+ \\w+ \\w+ (\\w+ \\w+)$", "\\1", target),
+          .keep = "unused"
         )
 
       fcasts <- tidyr::complete(
