@@ -1,7 +1,7 @@
 #' @author Written by Johannes Bracher, johannes.bacher@@kit.edu
 #' @import shiny
 #' @importFrom graphics legend par text
-#' @importFrom ggplot2 scale_y_continuous coord_cartesian expand_limits xlab .data aes scale_fill_viridis_d theme
+#' @import ggplot2
 
 # unix command to change language (for local testing)
 Sys.setlocale(category = "LC_TIME", locale = "en_US.UTF8")
@@ -14,9 +14,7 @@ truth <- covidHubUtils::load_truth(
   temporal_resolution = "weekly",
   hub = "ECDC"
 )
-truth$true_value <- truth$value
-truth$model <- NULL
-truth <- truth[, colnames(truth) != "value"]
+truth$scenario_id <- "truth"
 
 # adapt column names for matching with targets
 colnames(truth) <- gsub("inc_", "inc ", colnames(truth))
@@ -67,61 +65,37 @@ app_server <- function(input, output, session) {
       # get forecast date:
       origin_date <- forecasts()$origin_date[1]
 
-      fcasts <- forecasts() |>
-        dplyr::rename(prediction = value)
-
-      if (!hasName(fcasts, "quantile")) {
-        fcasts <- fcasts |>
-          dplyr::rename(var = type) |>
-          scoringutils::sample_to_quantile() |>
-          dplyr::rename(type = var)
-      }
-
       fcasts <- tidyr::complete(
-        fcasts,
+        forecasts(),
         .data$location,
         .data$target_variable,
         .data$origin_date,
-        tidyr::nesting(type, quantile),
+        type,
         fill = list(prediction = -1e6)
       )
 
-      truth <- truth[truth$target_variable %in% fcasts$target_variable, ]
-      truth <- truth[truth$location %in% fcasts$location, ]
-
-      dat <- scoringutils::merge_pred_and_obs(
-        fcasts,
-        truth,
-        "full"
-      )
-
-      filter_both <- list(paste0("target_end_date > '", origin_date - 35, "'"))
-
-      p <- scoringutils::plot_predictions(
-        dat,
-        x = "target_end_date",
-        facet_wrap_or_grid = "facet_wrap",
-        filter_both = filter_both,
-        facet_formula = location ~ target_variable,
-        ncol = length(unique(dat$target_variable)),
-        scales = "free_y",
-        range = c(0, 50, 95),
-        allow_truth_without_pred = TRUE
-      ) +
+      truth |>
+        dplyr::filter(
+          target_variable %in% fcasts$target_variable,
+          location %in% fcasts$location,
+          target_end_date > origin_date - 35
+        ) |>
+        dplyr::full_join(fcasts) |>
+        ggplot(aes(x = target_end_date, y = value, group = paste0(scenario_id, sample), color = scenario_id)) +
+        geom_line(alpha = 0.5) +
+        facet_wrap(
+          vars(location, target_variable),
+          scales = "free_y",
+          ncol = dplyr::n_distinct(fcasts$target_variable)
+        ) +
+        theme_minimal() +
+        scale_color_brewer(palette = "Set1") +
         scale_y_continuous(labels = scales::comma) +
         expand_limits(y = 0) +
         # Make sure negative values for cases/deaths are not displayed
         coord_cartesian(ylim = c(0, NA)) +
         xlab("Week") +
         theme(legend.position = "top")
-
-      if (hasName(dat, "scenario_id")) {
-        p +
-          aes(fill = scenario_id) +
-          scale_fill_viridis_d(alpha = 0.5)
-      } else {
-        p
-      }
 
     } else {
       # if no file is uploaded: empty plot with "Please select a valid csv file"
