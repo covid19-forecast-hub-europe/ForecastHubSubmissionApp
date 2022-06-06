@@ -81,7 +81,7 @@ app_server <- function(input, output, session) {
         ) |>
         dplyr::full_join(fcasts) |>
         ggplot(aes(x = target_end_date, y = value, group = paste0(scenario_id, sample), color = scenario_id)) +
-        geom_line(alpha = 0.5) +
+        geom_line(alpha = 0.1) +
         facet_wrap(
           vars(location, target_variable),
           scales = "free_y",
