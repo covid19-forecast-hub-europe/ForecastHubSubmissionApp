@@ -70,7 +70,6 @@ app_server <- function(input, output, session) {
         .data$location,
         .data$target_variable,
         .data$origin_date,
-        type,
         fill = list(prediction = -1e6)
       )
 
