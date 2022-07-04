@@ -1,7 +1,7 @@
 #' @author Written by Johannes Bracher, johannes.bacher@@kit.edu
 #' @import shiny
 #' @importFrom graphics legend par text
-#' @importFrom ggplot2 scale_y_continuous coord_cartesian expand_limits xlab .data aes scale_fill_viridis_d theme
+#' @importFrom ggplot2 scale_y_continuous coord_cartesian expand_limits xlab .data aes scale_fill_viridis_d theme facet_wrap
 
 # unix command to change language (for local testing)
 Sys.setlocale(category = "LC_TIME", locale = "en_US.UTF8")
@@ -65,7 +65,7 @@ app_server <- function(input, output, session) {
     if (!is.null(forecasts())) {
 
       # get forecast date:
-      forecast_date <- forecasts()$forecast_date[1]
+      f_date <- forecasts()$forecast_date[1]
 
       fcasts <- forecasts() |>
         dplyr::mutate(
@@ -92,25 +92,24 @@ app_server <- function(input, output, session) {
         "full"
       )
 
-      filter_both <- list(paste0("target_end_date > '", forecast_date - 35, "'"))
-
-      p <- scoringutils::plot_predictions(
-        dat,
-        x = "target_end_date",
-        facet_wrap_or_grid = "facet_wrap",
-        filter_both = filter_both,
-        facet_formula = location ~ target_variable,
-        ncol = length(unique(dat$target_variable)),
-        scales = "free_y",
-        range = c(0, 50, 95),
-        allow_truth_without_pred = TRUE
-      ) +
-        scale_y_continuous(labels = scales::comma) +
-        expand_limits(y = 0) +
-        # Make sure negative values for cases/deaths are not displayed
-        coord_cartesian(ylim = c(0, NA)) +
-        xlab("Week") +
-        theme(legend.position = "top")
+      p <- dat |>
+        dplyr::filter(target_end_date > f_date - 35) |>
+        scoringutils::plot_predictions(
+          x = "target_end_date",
+          range = c(0, 50, 95),
+          by = c("location", "target_variable")
+        ) +
+          facet_wrap(
+            location ~ target_variable,
+            ncol = length(unique(dat$target_variable)),
+            scales = "free_y"
+          ) +
+          scale_y_continuous(labels = scales::comma) +
+          expand_limits(y = 0) +
+          # Make sure negative values for cases/deaths are not displayed
+          coord_cartesian(ylim = c(0, NA)) +
+          xlab("Week") +
+          theme(legend.position = "top")
 
       if (hasName(dat, "scenario_id")) {
         p +
