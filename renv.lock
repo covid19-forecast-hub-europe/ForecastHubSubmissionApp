@@ -1,6 +1,6 @@
 {
   "R": {
-    "Version": "4.1.2",
+    "Version": "4.2.0",
     "Repositories": [
       {
         "Name": "RSPM",
@@ -25,7 +25,7 @@
       "Package": "MASS",
       "Version": "7.3-55",
       "Source": "Repository",
-      "Repository": "CRAN",
+      "Repository": "RSPM",
       "Hash": "c5232ffb549f6d7a04a152c34ca1353d",
       "Requirements": []
     },
@@ -41,7 +41,7 @@
       "Package": "Matrix",
       "Version": "1.4-0",
       "Source": "Repository",
-      "Repository": "CRAN",
+      "Repository": "RSPM",
       "Hash": "130c0caba175739d98f2963c6a407cf6",
       "Requirements": [
         "lattice"
@@ -51,7 +51,7 @@
       "Package": "R6",
       "Version": "2.5.1",
       "Source": "Repository",
-      "Repository": "CRAN",
+      "Repository": "RSPM",
       "Hash": "470851b6d5d0ac559e9d01bb352b4021",
       "Requirements": []
     },
@@ -85,7 +85,7 @@
       "Package": "RcppRoll",
       "Version": "0.3.0",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "CRAN",
       "Hash": "84a03997fbb5acfb3c9b43bad88fea1f",
       "Requirements": [
         "Rcpp"
@@ -121,7 +121,7 @@
       "Package": "base64url",
       "Version": "1.4",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "CRAN",
       "Hash": "0c54cf3a08cc0e550fbd64ad33166143",
       "Requirements": [
         "backports"
@@ -242,7 +242,7 @@
       "RemoteSha": "cc3ef283e5a72b27d5ea151a575fccdcef934180",
       "RemoteHost": "api.github.com",
       "Remotes": "reichlab/zoltr",
-      "Hash": "a2f218dfeff6fb4c977b7293b7e0e6b3",
+      "Hash": "3ac0341cce240dd5a329d9094811ffd4",
       "Requirements": [
         "MMWRweek",
         "RColorBrewer",
@@ -334,7 +334,7 @@
       "Package": "desc",
       "Version": "1.4.0",
       "Source": "Repository",
-      "Repository": "CRAN",
+      "Repository": "RSPM",
       "Hash": "28763d08fadd0b733e3cee9dab4e12fe",
       "Requirements": [
         "R6",
@@ -423,7 +423,7 @@
       "Package": "evaluate",
       "Version": "0.15",
       "Source": "Repository",
-      "Repository": "CRAN",
+      "Repository": "RSPM",
       "Hash": "699a7a93d08c962d9f8950b2d7a227f1",
       "Requirements": []
     },
@@ -467,7 +467,7 @@
       "Package": "fontawesome",
       "Version": "0.2.2",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "CRAN",
       "Hash": "55624ed409e46c5f358b2c060be87f67",
       "Requirements": [
         "htmltools",
@@ -491,7 +491,7 @@
       "Package": "foreach",
       "Version": "1.5.2",
       "Source": "Repository",
-      "Repository": "CRAN",
+      "Repository": "RSPM",
       "Hash": "618609b42c9406731ead03adf5379850",
       "Requirements": [
         "codetools",
@@ -649,7 +649,7 @@
       "Package": "httpuv",
       "Version": "1.6.5",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "CRAN",
       "Hash": "97fe71f0a4a1c9890e6c2128afa04bc0",
       "Requirements": [
         "R6",
@@ -732,7 +732,7 @@
       "Package": "later",
       "Version": "1.3.0",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "CRAN",
       "Hash": "7e7b457d7766bc47f2a5f21cc2984f8e",
       "Requirements": [
         "Rcpp",
@@ -820,7 +820,7 @@
       "Package": "nlme",
       "Version": "3.1-155",
       "Source": "Repository",
-      "Repository": "CRAN",
+      "Repository": "RSPM",
       "Hash": "74ad940dccc9e977189a5afe5fcdb7ba",
       "Requirements": [
         "lattice"
@@ -829,8 +829,14 @@
     "numDeriv": {
       "Package": "numDeriv",
       "Version": "2016.8-1.1",
-      "Source": "Repository",
+      "Source": "CRAN",
       "Repository": "RSPM",
+      "RemoteType": "standard",
+      "RemotePkgRef": "numDeriv",
+      "RemoteRef": "numDeriv",
+      "RemoteRepos": "https://packagemanager.rstudio.com/cran/__linux__/focal/latest",
+      "RemotePkgPlatform": "source",
+      "RemoteSha": "2016.8-1.1",
       "Hash": "df58958f293b166e4ab885ebcad90e02",
       "Requirements": []
     },
@@ -856,7 +862,7 @@
       "Package": "pillar",
       "Version": "1.7.0",
       "Source": "Repository",
-      "Repository": "CRAN",
+      "Repository": "RSPM",
       "Hash": "51dfc97e1b7069e9f7e6f83f3589c22e",
       "Requirements": [
         "cli",
@@ -938,7 +944,7 @@
       "Package": "promises",
       "Version": "1.2.0.1",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "CRAN",
       "Hash": "4ab2c43adb4d4699cf3690acd378d75d",
       "Requirements": [
         "R6",
@@ -1009,10 +1015,7 @@
       "Package": "renv",
       "Version": "0.15.2-1",
       "Source": "Repository",
-      "Repository": "https://rstudio.r-universe.dev",
-      "RemoteUrl": "https://github.com/rstudio/renv",
-      "RemoteRef": "HEAD",
-      "RemoteSha": "d69b7ef28bd86778491bebbab49894dfc9e3cad2",
+      "Repository": "RSPM",
       "Hash": "211b27b4c104ce4499d8fd1005d980bc",
       "Requirements": []
     },
@@ -1020,7 +1023,7 @@
       "Package": "rlang",
       "Version": "1.0.1",
       "Source": "Repository",
-      "Repository": "CRAN",
+      "Repository": "RSPM",
       "Hash": "3bf0219f19d9f5b3c682acbb3546a151",
       "Requirements": []
     },
@@ -1028,7 +1031,7 @@
       "Package": "rprojroot",
       "Version": "2.0.2",
       "Source": "Repository",
-      "Repository": "CRAN",
+      "Repository": "RSPM",
       "Hash": "249d8cd1e74a8f6a26194a91b47f21d1",
       "Requirements": []
     },
@@ -1089,8 +1092,14 @@
     "scoringRules": {
       "Package": "scoringRules",
       "Version": "1.0.1",
-      "Source": "Repository",
+      "Source": "CRAN",
       "Repository": "RSPM",
+      "RemoteType": "standard",
+      "RemotePkgRef": "scoringRules",
+      "RemoteRef": "scoringRules",
+      "RemoteRepos": "https://packagemanager.rstudio.com/cran/__linux__/focal/latest",
+      "RemotePkgPlatform": "source",
+      "RemoteSha": "1.0.1",
       "Hash": "443fb7653ed5fbcf766e934850490696",
       "Requirements": [
         "MASS",
@@ -1105,15 +1114,16 @@
       "Source": "GitHub",
       "RemoteType": "github",
       "RemoteHost": "api.github.com",
-      "RemoteRepo": "scoringutils",
       "RemoteUsername": "epiforecasts",
-      "RemoteRef": "major-update",
-      "RemoteSha": "a465c843cf5f0efd7881154ff0a3fd957359a221",
-      "Hash": "af0066fc106c67f8a0f2d0617be25811",
+      "RemoteRepo": "scoringutils",
+      "RemoteRef": "master",
+      "RemoteSha": "ea2669fcfa681143eb8978cb9f246b1a587ce708",
+      "Hash": "a42b95006ea1bbd9c40103d3b5249a2d",
       "Requirements": [
         "data.table",
         "ggdist",
         "ggplot2",
+        "rlang",
         "scoringRules"
       ]
     },
@@ -1121,7 +1131,7 @@
       "Package": "shiny",
       "Version": "1.7.1",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "CRAN",
       "Hash": "00344c227c7bd0ab5d78052c5d736c44",
       "Requirements": [
         "R6",
@@ -1150,7 +1160,7 @@
       "Package": "sourcetools",
       "Version": "0.1.7",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "CRAN",
       "Hash": "947e4e02a79effa5d512473e10f41797",
       "Requirements": []
     },
@@ -1231,7 +1241,7 @@
       "Package": "tidyr",
       "Version": "1.2.0",
       "Source": "Repository",
-      "Repository": "CRAN",
+      "Repository": "RSPM",
       "Hash": "d8b95b7fee945d7da6888cf7eb71a49c",
       "Requirements": [
         "cpp11",
@@ -1265,7 +1275,7 @@
       "Package": "triebeard",
       "Version": "0.3.0",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "CRAN",
       "Hash": "847a9d113b78baca4a9a8639609ea228",
       "Requirements": [
         "Rcpp"
@@ -1285,7 +1295,7 @@
       "Package": "urltools",
       "Version": "1.7.3",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "CRAN",
       "Hash": "e86a704261a105f4703f653e05defa3e",
       "Requirements": [
         "Rcpp",
@@ -1388,7 +1398,7 @@
       "Package": "withr",
       "Version": "2.4.3",
       "Source": "Repository",
-      "Repository": "CRAN",
+      "Repository": "RSPM",
       "Hash": "a376b424c4817cda4920bbbeb3364e85",
       "Requirements": []
     },
@@ -1404,7 +1414,7 @@
       "Package": "xtable",
       "Version": "1.8-4",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "CRAN",
       "Hash": "b8acdf8af494d9ec19ccb2481a9b11c2",
       "Requirements": []
     },
