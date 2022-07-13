@@ -68,9 +68,13 @@ app_server <- function(input, output, session) {
       f_date <- forecasts()$forecast_date[1]
 
       fcasts <- forecasts() |>
+        tidyr::separate(
+          target,
+          into = c("horizon", NA, NA, "inc_or_cum", "target_var")
+        ) |>
         dplyr::mutate(
           prediction = value,
-          target_variable = gsub("^\\d+ \\w+ \\w+ (\\w+ \\w+)$", "\\1", target),
+          target_variable = paste(inc_or_cum, target_var),
           .keep = "unused"
         )
 
@@ -83,14 +87,20 @@ app_server <- function(input, output, session) {
         fill = list(prediction = -1e6)
       )
 
+      horizon_0 <- fcasts |>
+        dplyr::group_by(forecast_date, location, target_variable, quantile) |>
+        dplyr::summarise(
+          target_end_date = unique(forecast_date) - 2,
+          horizon = "0",
+          type = "point"
+        )
+
       truth <- truth[truth$target_variable %in% fcasts$target_variable, ]
       truth <- truth[truth$location %in% fcasts$location, ]
 
-      dat <- scoringutils::merge_pred_and_obs(
-        fcasts,
-        truth,
-        "full"
-      )
+      dat <- dplyr::full_join(horizon_0, fcasts) |>
+        scoringutils::merge_pred_and_obs(truth, "full") |>
+        dplyr::mutate(prediction = ifelse(horizon == "0", true_value, prediction))
 
       p <- dat |>
         dplyr::filter(target_end_date > f_date - 35) |>
