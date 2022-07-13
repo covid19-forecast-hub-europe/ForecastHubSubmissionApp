@@ -20,6 +20,7 @@ Imports:
     dplyr,
     gert,
     ggplot2,
+    lubridate,
     pkgload,
     scoringutils,
     shiny,

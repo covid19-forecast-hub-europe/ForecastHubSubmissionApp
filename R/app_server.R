@@ -68,6 +68,10 @@ app_server <- function(input, output, session) {
       f_date <- forecasts()$forecast_date[1]
 
       fcasts <- forecasts() |>
+        # Normalise forecast_date
+        dplyr::mutate(
+          forecast_date = lubridate::ceiling_date(forecast_date, "week", week_start = 2) - 1
+        ) |>
         tidyr::separate(
           target,
           into = c("horizon", NA, NA, "inc_or_cum", "target_var")
