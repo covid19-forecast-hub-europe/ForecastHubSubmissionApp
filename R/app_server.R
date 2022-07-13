@@ -92,11 +92,10 @@ app_server <- function(input, output, session) {
       )
 
       horizon_0 <- fcasts |>
-        dplyr::group_by(forecast_date, location, target_variable, quantile) |>
+        dplyr::group_by(across(!c(prediction, horizon, target_end_date))) |>
         dplyr::summarise(
           target_end_date = unique(forecast_date) - 2,
-          horizon = "0",
-          type = "point"
+          horizon = "0"
         )
 
       truth <- truth[truth$target_variable %in% fcasts$target_variable, ]
