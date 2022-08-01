@@ -80,7 +80,8 @@ app_server <- function(input, output, session) {
           prediction = value,
           target_variable = paste(inc_or_cum, target_var),
           .keep = "unused"
-        )
+        ) |>
+        point_to_median()
 
       fcasts <- tidyr::complete(
         fcasts,
