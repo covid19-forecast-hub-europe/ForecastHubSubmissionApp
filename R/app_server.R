@@ -74,6 +74,7 @@ app_server <- function(input, output, session) {
       )
 
       n_samples <- max(fcasts$sample)
+      n_scenarios <- dplyr::n_distinct(fcasts$scenario_id)
 
       truth |>
         dplyr::filter(
@@ -90,8 +91,8 @@ app_server <- function(input, output, session) {
           ncol = dplyr::n_distinct(fcasts$target_variable)
         ) +
         theme_minimal() +
-        scale_color_manual(values = unname(rev(palette.colors(n = 5, palette = "Okabe-Ito")))) +
-        scale_alpha_manual(values = c(rep(10/n_samples, 4), 1)) +
+        scale_color_manual(values = unname(rev(palette.colors(n = n_scenarios + 1, palette = "Okabe-Ito")))) +
+        scale_alpha_manual(values = c(rep(10/n_samples, n_scenarios), 1)) +
         scale_y_continuous(labels = scales::comma) +
         expand_limits(y = 0) +
         # Make sure negative values for cases/deaths are not displayed
