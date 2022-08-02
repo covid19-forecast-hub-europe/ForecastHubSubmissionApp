@@ -80,15 +80,16 @@ app_server <- function(input, output, session) {
           target_end_date > origin_date - 35
         ) |>
         dplyr::full_join(fcasts) |>
-        ggplot(aes(x = target_end_date, y = value, group = paste0(scenario_id, sample), color = scenario_id)) +
-        geom_line(alpha = 0.1) +
+        ggplot(aes(x = target_end_date, y = value, group = paste0(scenario_id, sample), color = scenario_id, alpha = scenario_id)) +
+        geom_line() +
         facet_wrap(
           vars(location, target_variable),
           scales = "free_y",
           ncol = dplyr::n_distinct(fcasts$target_variable)
         ) +
         theme_minimal() +
-        scale_color_brewer(palette = "Set1") +
+        scale_color_manual(values = unname(rev(palette.colors(n = 5, palette = "Okabe-Ito")))) +
+        scale_alpha_manual(values = c(0.1, 0.1, 0.1, 0.1, 1)) +
         scale_y_continuous(labels = scales::comma) +
         expand_limits(y = 0) +
         # Make sure negative values for cases/deaths are not displayed
