@@ -73,10 +73,12 @@ app_server <- function(input, output, session) {
         fill = list(prediction = -1e6)
       )
 
+      n_samples <- max(fcasts$sample)
+
       truth |>
         dplyr::filter(
-          target_variable %in% fcasts$target_variable,
-          location %in% fcasts$location,
+          target_variable %in% unique(fcasts$target_variable),
+          location %in% unique(fcasts$location),
           target_end_date > origin_date - 35
         ) |>
         dplyr::full_join(fcasts) |>
@@ -89,7 +91,7 @@ app_server <- function(input, output, session) {
         ) +
         theme_minimal() +
         scale_color_manual(values = unname(rev(palette.colors(n = 5, palette = "Okabe-Ito")))) +
-        scale_alpha_manual(values = c(0.1, 0.1, 0.1, 0.1, 1)) +
+        scale_alpha_manual(values = c(rep(10/n_samples, 4), 1)) +
         scale_y_continuous(labels = scales::comma) +
         expand_limits(y = 0) +
         # Make sure negative values for cases/deaths are not displayed
