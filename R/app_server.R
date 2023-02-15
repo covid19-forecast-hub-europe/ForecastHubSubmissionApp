@@ -74,10 +74,12 @@ app_server <- function(input, output, session) {
         ) |>
         tidyr::separate(
           target,
-          into = c("horizon", NA, NA, "inc_or_cum", "target_var")
+          into = c("horizon", NA, NA, "inc_or_cum", "target_var"),
+          sep = " "
         ) |>
         dplyr::mutate(
           prediction = value,
+          horizon = as.integer(horizon),
           target_variable = paste(inc_or_cum, target_var),
           .keep = "unused"
         ) |>
@@ -95,8 +97,9 @@ app_server <- function(input, output, session) {
       horizon_0 <- fcasts |>
         dplyr::group_by(across(!c(prediction, horizon, target_end_date))) |>
         dplyr::summarise(
-          target_end_date = unique(forecast_date) - 2,
-          horizon = "0"
+          target_end_date = min(target_end_date) - 7,
+          horizon = min(horizon) - 1,
+          connector = TRUE
         )
 
       truth <- truth[truth$target_variable %in% fcasts$target_variable, ]
@@ -104,7 +107,10 @@ app_server <- function(input, output, session) {
 
       dat <- dplyr::full_join(horizon_0, fcasts) |>
         scoringutils::merge_pred_and_obs(truth, "full") |>
-        dplyr::mutate(prediction = ifelse(horizon == "0", true_value, prediction))
+        dplyr::mutate(prediction = ifelse(
+          !is.na(connector) & connector, true_value, prediction)
+        ) |>
+        dplyr::select(-connector)
 
       p <- dat |>
         dplyr::filter(target_end_date > f_date - 35) |>
