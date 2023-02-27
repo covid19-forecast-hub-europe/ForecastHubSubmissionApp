@@ -207,17 +207,43 @@
     },
     "covidHubUtils": {
       "Package": "covidHubUtils",
-      "Version": "0.1.6",
+      "Version": "0.1.7",
       "Source": "GitHub",
       "RemoteType": "github",
       "RemoteUsername": "reichlab",
       "RemoteRepo": "covidHubUtils",
       "RemoteRef": "HEAD",
-      "RemoteSha": "cc3ef283e5a72b27d5ea151a575fccdcef934180",
+      "RemoteSha": "43658824465bf5a0b167552637206f9fce860f66",
       "RemoteHost": "api.github.com",
-      "Remotes": "reichlab/zoltr",
-      "Hash": "3ac0341cce240dd5a329d9094811ffd4",
-      "Requirements": []
+      "Remotes": "reichlab/zoltr, epiforecasts/scoringutils",
+      "Hash": "af5355cad592e8be0223abafd5b725ac",
+      "Requirements": [
+        "DBI",
+        "MMWRweek",
+        "RColorBrewer",
+        "RSQLite",
+        "RcppRoll",
+        "colorspace",
+        "doParallel",
+        "dplyr",
+        "forcats",
+        "foreach",
+        "ggnewscale",
+        "ggplot2",
+        "httr",
+        "jsonlite",
+        "lifecycle",
+        "lubridate",
+        "magrittr",
+        "purrr",
+        "readr",
+        "scoringutils",
+        "stringr",
+        "tibble",
+        "tidyr",
+        "yaml",
+        "zoltr"
+      ]
     },
     "cpp11": {
       "Package": "cpp11",
@@ -1044,16 +1070,27 @@
     },
     "zoltr": {
       "Package": "zoltr",
-      "Version": "0.94",
+      "Version": "1.0.0",
       "Source": "GitHub",
       "RemoteType": "github",
       "RemoteHost": "api.github.com",
-      "RemoteRepo": "zoltr",
       "RemoteUsername": "reichlab",
-      "RemoteRef": "HEAD",
-      "RemoteSha": "807c5e9e33d86be5529b45a812cd7271ac96a226",
-      "Hash": "67ab04fe58e0348f1aa6deac6461c948",
-      "Requirements": []
+      "RemoteRepo": "zoltr",
+      "RemoteRef": "master",
+      "RemoteSha": "4e77910020c15827002f4bbc25b5797bc9d68eed",
+      "Hash": "579ebbca043a47bd105ffe64648d2d63",
+      "Requirements": [
+        "MMWRweek",
+        "base64url",
+        "data.table",
+        "dplyr",
+        "httr",
+        "jsonlite",
+        "lubridate",
+        "magrittr",
+        "readr",
+        "rlang"
+      ]
     }
   }
 }
