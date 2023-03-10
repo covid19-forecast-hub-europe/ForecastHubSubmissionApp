@@ -10,8 +10,6 @@ Sys.setlocale(category = "LC_TIME", locale = "en_US.UTF8")
 # Sys.setlocale(category = "LC_TIME","English")
 
 truth <- covidHubUtils::load_truth(
-  truth_source = "JHU",
-  temporal_resolution = "weekly",
   hub = "ECDC"
 )
 truth$true_value <- truth$value
